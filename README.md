@@ -3,7 +3,7 @@
 ## Early Development Planning & System Design
 
 - [Plan](./docs/Plan.md)
-- [Architecture](./docs/Plan.md)
+- [Architecture](./docs/Architecture.md)
 - Still researching, planning and designing. Yet to draw diagrams.
 
 ---
