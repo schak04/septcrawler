@@ -10,7 +10,7 @@
 
 ## Author
 
-Copyright (c) 2026 [Saptaparno Chakraborty](https://github.com/schak04).  
+&copy; 2026 [Saptaparno Chakraborty](https://github.com/schak04).  
 All rights reserved.
 
 ---
