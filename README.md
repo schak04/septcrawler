@@ -1,10 +1,26 @@
 # SeptCrawler
 
-## Early Development Planning & System Design
+## Early Development Planning
 
 - [Plan](./docs/Plan.md)
 - [Architecture](./docs/Architecture.md)
-- Still researching, planning and designing. Yet to draw diagrams.
+- Still researching, planning and designing. Yet to complete diagrams.
+
+## System Design
+
+### High-Level Design
+
+- **System Architecture Diagram:**  
+![System Architecture](./docs/diagrams/system-architecture.png)
+
+- **Data Flow Diagram:**  
+![Data Flow Diagram](./docs/diagrams/dfd.png)
+
+### Low-Level Design
+
+- **C++ Indexing Internals (Data Structure Diagram):**  
+![C++ Indexing Internals](./docs/diagrams/dsd.png)
+
 
 ---
 
