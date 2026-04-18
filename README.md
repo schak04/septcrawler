@@ -5,11 +5,11 @@ Currently in design phase.
 
 ---
 
-## Early Development Planning
+## Current Status
 
-- [Plan](./docs/Plan.md)
-- [Architecture](./docs/Architecture.md)
-- Still researching, planning and designing. Yet to complete diagrams.
+- Done with foundational system design.
+- Researching and studying about search engines and web crawlers.
+- Planning to start implementation soon.
 
 ---
 
