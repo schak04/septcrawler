@@ -1,6 +1,6 @@
 # SeptCrawler
 
-A search engine for learners/students being built from scratch using C++ and Node.js.  
+This project is a search engine for learners/students being built from scratch using C++ and Node.js.  
 Currently in design phase.
 
 ## Early Development Planning
