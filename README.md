@@ -15,7 +15,7 @@ Currently in design phase.
 
 ## System Design
 
-### <u>High-Level Design</u>
+### <ins>High-Level Design</ins>
 
 - **System Architecture Diagram:**  
 ![System Architecture](./docs/diagrams/system-architecture.png)
@@ -23,7 +23,7 @@ Currently in design phase.
 - **Data Flow Diagram:**  
 ![Data Flow Diagram](./docs/diagrams/dfd.png)
 
-### <u>Low-Level Design</u>
+### <ins>Low-Level Design</ins>
 
 - **C++ Indexing Internals (Data Structure Diagram):**  
 ![C++ Indexing Internals](./docs/diagrams/dsd.png)
