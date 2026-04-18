@@ -32,7 +32,7 @@ Currently in design phase.
 ![Search Execution Sequence](./docs/diagrams/search-execution-sequence.png)
 
 - **Component Breakdown (Component Diagram):**  
-(yet to draw)
+![Component Breakdown](./docs/diagrams/component-breakdown.png)
 
 ---
 
