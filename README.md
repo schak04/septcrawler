@@ -3,15 +3,19 @@
 This project is a search engine for learners/students being built from scratch using C++ and Node.js.  
 Currently in design phase.
 
+---
+
 ## Early Development Planning
 
 - [Plan](./docs/Plan.md)
 - [Architecture](./docs/Architecture.md)
 - Still researching, planning and designing. Yet to complete diagrams.
 
+---
+
 ## System Design
 
-### High-Level Design
+### <u>High-Level Design</u>
 
 - **System Architecture Diagram:**  
 ![System Architecture](./docs/diagrams/system-architecture.png)
@@ -19,7 +23,7 @@ Currently in design phase.
 - **Data Flow Diagram:**  
 ![Data Flow Diagram](./docs/diagrams/dfd.png)
 
-### Low-Level Design
+### <u>Low-Level Design</u>
 
 - **C++ Indexing Internals (Data Structure Diagram):**  
 ![C++ Indexing Internals](./docs/diagrams/dsd.png)
