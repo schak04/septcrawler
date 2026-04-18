@@ -28,6 +28,11 @@ Currently in design phase.
 - **C++ Indexing Internals (Data Structure Diagram):**  
 ![C++ Indexing Internals](./docs/diagrams/dsd.png)
 
+- **Search Execution Sequence (Sequence Diagram):**  
+![Search Execution Sequence](./docs/diagrams/search-execution-sequence.png)
+
+- **Component Breakdown (Component Diagram):**  
+(yet to draw)
 
 ---
 
