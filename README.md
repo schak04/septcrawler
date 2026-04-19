@@ -7,7 +7,7 @@ This project is a search engine for learners/students, being built from scratch 
 ## Current Status
 
 - Done with foundational system design.
-- Researching and studying about search engines and web crawlers.
+- Researching and studying more about search engines and web crawlers to prepare for implementation.
 - Planning to start implementation soon.
 
 ---
