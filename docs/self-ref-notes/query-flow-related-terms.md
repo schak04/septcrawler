@@ -1,4 +1,4 @@
-# Query Processing
+# QueryFlow-related terms 
 
 ## Search Query Normalization
 
@@ -17,6 +17,8 @@ Tokenization in full-text search is the process of breaking down a block of text
 **Ref:** https://en.wikipedia.org/wiki/Information_retrieval
 
 Retrieval is the process where a search engine fetches the most relevant documents from its database (index) to match a user's query. It acts as the first filter, narrowing down billions of web pages into a few hundred candidates before final ranking.
+
+(Query processing ends here... then comes ranking and result assembly)
 
 ## Ranking
 
