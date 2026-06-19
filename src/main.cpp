@@ -1,4 +1,4 @@
 /*
-SeptCrawler: A search engine made for learners.
+SeptCrawler: A search engine being made for learning-focused retrieval.
 Author: Saptaparno Chakraborty
 */
