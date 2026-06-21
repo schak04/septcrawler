@@ -4,8 +4,8 @@ This project is a search engine for learners/students, being built from scratch 
 
 > [!IMPORTANT]  
 > **Project Status: In Active Design + Study/Research Phase, Development Soon To Start**  
-> SeptCrawler is a personal learning, research, and portfolio project being developed independently by [me](#author).  
-> The repository is not intended for external contributions.
+> SeptCrawler is a personal learning, research, recreational, and portfolio project being developed independently by [me](#author).  
+> Feedback and discussions are always welcome, but the repository is not intended for external contributions.
 
 ---
 
