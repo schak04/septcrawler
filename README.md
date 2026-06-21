@@ -2,13 +2,10 @@
 
 This project is a search engine for learners/students, being built from scratch using C++ and Node.js.
 
----
-
-## Current Status
-
-- Done with foundational system design; still improving and refining design docs.
-- Researching and studying more about search engines to improve the design and prepare for implementation.
-- Planning to start implementation as soon as the design is finalised and I'm done with the initial pre-implementation studying/researching.
+> [!IMPORTANT]  
+> **Project Status: In Active Design + Study/Research Phase, Development Soon To Start**
+> SeptCrawler is a personal learning, research, and portfolio project being developed independently by [me](#author).  
+> The repository is not intended for external contributions.
 
 ---
 
