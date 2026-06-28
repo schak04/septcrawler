@@ -18,6 +18,15 @@ Along the way, my goal is to make something that could be useful for learners an
 
 ---
 
+## Technology Choices
+
+The decision of using a combination of C++ and Node.js comes from the need to separate the system into performance-critical components and orchestration components.  
+The search engine core (including indexing + retrieval + ranking) is to be implemented in C++ because these components rely heavily on efficient data structures, memory management, and low-level control.  
+Node.js is used for the web-facing and coordination layer, including the crawler, HTML parser, and search API, where networking, asynchronous operations, and ecosystem support are more important than raw performance.  
+This separation keeps the architecture modular while allowing each component to use technologies suited to its responsibilities.
+
+---
+
 ## System Design
 
 ### <ins>High-Level Design</ins>
