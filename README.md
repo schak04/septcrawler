@@ -1,9 +1,9 @@
 # SeptCrawler
 
-This project is a search engine for learners/students, being built from scratch using C++ and Node.js.
+This project is a search engine for retrieving learning resources (documentation, references, tutorials, and discussion forums). I'm writing the search engine's core from scratch in C++, with Node.js for the API, crawler & parser. The project is designed to crawl and index learning resources, allowing users to search across them through a focused interface without having them polluted by entertainment-related results.
 
 > [!IMPORTANT]  
-> **Project Status: In Active Design + Study/Research Phase, Development Soon To Start**  
+> **Project Status: In Active Design + Study/Research Phase; Development Soon To Start**  
 > SeptCrawler is a personal learning, research, recreational, and portfolio project being developed independently by [me](#author).  
 > Feedback and discussions are always welcome, but the repository is not intended for external contributions.
 
