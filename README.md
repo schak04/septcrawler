@@ -60,7 +60,9 @@ The system is split into 3 layers:
 
 ## System Design
 
-### <ins>High-Level Design</ins>
+### <ins>Diagrams</ins>
+
+#### <ins>High-Level Design</ins>
 
 - **System Architecture Diagram:**  
 ![System Architecture](./docs/diagrams/system-architecture.png)
@@ -68,7 +70,7 @@ The system is split into 3 layers:
 - **Data Flow Diagram:**  
 ![Data Flow Diagram](./docs/diagrams/dfd.png)
 
-### <ins>Low-Level Design</ins>
+#### <ins>Low-Level Design</ins>
 
 - **C++ Indexing Internals (Data Structure Diagram):**  
 ![C++ Indexing Internals](./docs/diagrams/dsd.png)
