@@ -25,6 +25,14 @@ The search engine core (including indexing + retrieval + ranking) is to be imple
 Node.js is used for the web-facing and coordination layer, including the crawler, HTML parser, and search API, where networking, asynchronous operations, and ecosystem support are more important than raw performance.  
 This separation keeps the architecture modular while allowing each component to use technologies suited to its responsibilities.
 
+> "But Saptaparno, can you really say you're making this **from scratch** if you're using Node.js for the API layer?"
+
+Well, hear me out...  
+When I say _from scratch_, I'm referring to the **search engine itself**. Not every supporting piece.  
+The core of SeptCrawler, including the inverted index, indexing pipeline, query processing, retrieval engine, ranking pipeline, is being designed and implemented by me from the ground up in C++. Node.js is for writing the supporting components.  
+My goal with this project is to learn how search engines work internally. That means spending my time building the search engine, not rebuilding the supporting components.  
+That doesn't mean those supporting components aren't interesting to me. Quite the opposite. I do want to build things like HTTP servers, parsers, and networking software from scratch as well, but I see those as projects with their own learning goals rather than things to bundle into this one. Hence, I eventually plan to make those separately for my learning (and enjoyment).
+
 ---
 
 ## System Design
