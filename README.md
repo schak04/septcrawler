@@ -49,6 +49,15 @@ The system is split into 3 layers:
 
 ---
 
+## Design Decisions
+
+1. **Separation of concerns:** Ingestion is separate from query processing, and retrieval is separate from ranking.
+2. **Two independent pipelines:** Offline ingestion vs online query processing.
+3. **Index is a database, not a pipeline stage:** It is queried, not passed through.
+4. **Retrieval is the mandatory bridge:** Without retrieval, the ranker cannot operate and the index cannot be used meaningfully.
+
+---
+
 ## System Design
 
 ### <ins>High-Level Design</ins>
