@@ -34,6 +34,21 @@ This separation keeps the architecture modular while allowing each component to 
 
 ---
 
+## System Overview
+
+There are two main pipelines:
+
+1. **Ingestion Pipeline (offline):** Crawls and indexes learning resources from the internet.
+2. **Query Pipeline (online):** Processes user queries and returns ranked results.
+
+The system is split into 3 layers:
+
+- **C++ layer:** Core of the search engine
+- **Node.js layer:** API + orchestration
+- **Storage layer:** Documents + inverted index
+
+---
+
 ## System Design
 
 ### <ins>High-Level Design</ins>
