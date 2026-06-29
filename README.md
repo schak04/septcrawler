@@ -84,6 +84,10 @@ The system is split into 3 layers:
 - **Component Breakdown (Component Diagram):**  
 ![Component Breakdown](./docs/diagrams/component-breakdown.png)
 
+### <ins>Textual Documentation</ins>
+
+- [High-Level Design](./docs/design-details/hld.md)
+
 ---
 
 ## Author
