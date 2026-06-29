@@ -56,6 +56,9 @@ The system is split into 3 layers:
 3. **Index is a database, not a pipeline stage:** It is queried, not passed through.
 4. **Retrieval is the mandatory bridge:** Without retrieval, the ranker cannot operate and the index cannot be used meaningfully.
 
+> [!NOTE]  
+> When I say **online**, I mean work performed while handling a live user request, and **offline** refers to work performed independently of any live user request, typically in the background to prepare data for future searches.
+
 ---
 
 ## System Design
