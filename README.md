@@ -68,21 +68,21 @@ The system is split into 3 layers:
 #### <ins>High-Level Design</ins>
 
 - **System Architecture Diagram:**  
-![System Architecture](./docs/diagrams/system-architecture.png)
+  ![System Architecture](./docs/diagrams/system-architecture.png)
 
 - **Data Flow Diagram:**  
-![Data Flow Diagram](./docs/diagrams/dfd.png)
+  ![Data Flow Diagram](./docs/diagrams/dfd.png)
 
 #### <ins>Low-Level Design</ins>
 
 - **C++ Indexing Internals (Data Structure Diagram):**  
-![C++ Indexing Internals](./docs/diagrams/dsd.png)
+  ![C++ Indexing Internals](./docs/diagrams/dsd.png)
 
 - **Search Execution Sequence (Sequence Diagram):**  
-![Search Execution Sequence](./docs/diagrams/search-execution-sequence.png)
+  ![Search Execution Sequence](./docs/diagrams/search-execution-sequence.png)
 
 - **Component Breakdown (Component Diagram):**  
-![Component Breakdown](./docs/diagrams/component-breakdown.png)
+  ![Component Breakdown](./docs/diagrams/component-breakdown.png)
 
 ### <ins>Textual Documentation</ins>
 
