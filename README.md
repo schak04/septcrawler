@@ -87,6 +87,7 @@ The system is split into 3 layers:
 ### <ins>Textual Documentation</ins>
 
 - [High-Level Design](./docs/design-details/hld.md)
+- [Low-Level Design](./docs/design-details/lld.md)
 
 ---
 
