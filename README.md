@@ -17,7 +17,7 @@ This project is a search engine for retrieving learning resources (documentation
 >
 > I named it so because the crawler is the origin of everything the search engine does. It discovers content. It feeds the index. Without it, there's nothing to parse, nothing to store, nothing to retrieve, nothing to rank, nothing to serve.
 >
-> The rest of the system makes sense of what the crawler finds. So, that is why I feel the name makes sense and that is why I decided to name the search engine as SeptCrawler.
+> The rest of the system makes sense of what the crawler finds. So, that is why I feel the name makes sense and that is why I decided to name this project as SeptCrawler.
 >
 > Thanks for coming to my TED Talk >:D
 
