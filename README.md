@@ -7,6 +7,20 @@ This project is a search engine for retrieving learning resources (documentation
 > SeptCrawler is a personal learning, research, recreational, and portfolio project being developed independently by [me](#author).  
 > Feedback and discussions are always welcome, but the repository is not intended for external contributions.
 
+> [!NOTE]  
+> Why "SeptCrawler"?  
+> I named this project "SeptCrawler" because, first of all, Sept comes from my name, and second of all, the crawler is where everything begins.
+>
+> _"But Saptaparno, isn't this a full search engine? Why name it after just the crawler?"_
+>
+> Fair question.
+>
+> I named it so because the crawler is the origin of everything the search engine does. It discovers content. It feeds the index. Without it, there's nothing to parse, nothing to store, nothing to retrieve, nothing to rank, nothing to serve.
+>
+> The rest of the system makes sense of what the crawler finds. So, that is why I feel the name makes sense and that is why I decided to name the search engine as SeptCrawler.
+>
+> Thanks for coming to my TED Talk >:D
+
 ---
 
 ## Goal/Motivation
@@ -25,7 +39,7 @@ The search engine core (including indexing + retrieval + ranking) is to be imple
 Node.js is used for the web-facing and coordination layer, including the crawler, HTML parser, and search API, where networking, asynchronous operations, and ecosystem support are more important than raw performance.  
 This separation keeps the architecture modular while allowing each component to use technologies suited to its responsibilities.
 
-> "But Saptaparno, can you really say you're making this **from scratch** if you're using Node.js for the API layer?"  
+> _"But Saptaparno, can you really say you're making this **from scratch** if you're using Node.js for the API layer?"_  
 > Well, hear me out...  
 > When I say _from scratch_, I'm referring to the **search engine itself**. Not every supporting piece.  
 > The core of SeptCrawler, including the inverted index, indexing pipeline, query processing, retrieval engine, ranking pipeline, is being designed and implemented by me from the ground up in C++. Node.js is for writing the supporting components.  
@@ -88,6 +102,12 @@ The system is split into 3 layers:
 
 - **Component Breakdown (Component Diagram):**  
   ![Component Breakdown](./docs/diagrams/component-breakdown.png)
+
+---
+
+## References
+
+- https://www.geeksforgeeks.org/machine-learning/understanding-tf-idf-term-frequency-inverse-document-frequency
 
 ---
 
