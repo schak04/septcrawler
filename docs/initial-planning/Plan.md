@@ -13,7 +13,7 @@
 - **C++ (Core Search Engine):** indexing, ranking, heavy computation
 
 > [!NOTE]  
-> Since I mainly work with C and C++ (I write C++ like it's C while leveraging some selective C++ features) and Node.js, and Node.js being single-threaded cannot handle Indexing + Ranking alone optimally, so I'll be using both C++ and Node.js for building this search engine project.
+> Since I mainly work with C++ (and C) and Node.js, I'll build the search engine core (indexing and ranking) in C++ for its performance and low-level control, while using Node.js for the crawler, parser, and API, where its asynchronous I/O model is a good fit.
 
 ## System Architecture
 
