@@ -88,16 +88,17 @@ struct CandidateDocument {
 
 The ingestion pipeline builds the inverted index through the following stages:
 
-`Web -> Crawler -> HTML Parser -> Normalization -> Tokenization -> Posting Generation -> Inverted Index -> Persistent Storage`
+`Web -> Crawler -> HTML Parser (-> Raw Documents Storage) -> Index Builder (Normalize -> Tokenize -> Generate Postings) -> Inverted Index -> Persistent Storage`
+
+> Normalization, tokenization, and posting generation are internal steps of the Index Builder, not separate components.
 
 During indexing:
 
 1. Documents are fetched by the crawler.
 2. HTML content is parsed into usable text.
-3. Text is normalized.
-4. Normalized text is tokenized.
-5. Posting lists are generated.
-6. The inverted index is written to persistent storage.
+3. Clean documents are written to Raw Documents storage.
+4. The Index Builder normalizes the text, tokenizes it, and generates posting lists.
+5. The inverted index is written to persistent storage.
 
 ---
 
@@ -136,6 +137,7 @@ Execution flow: `User -> Search API -> Query Processor -> Retrieval Engine (<-> 
 - Extracting text
 - Extracting useful metadata
 - Producing clean documents for indexing
+- Writing clean documents to Raw Documents storage
 
 ---
 

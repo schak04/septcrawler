@@ -9,7 +9,7 @@
 
 ## Tech Stack
 
-- **Node.js (I/O Layer):** networking, crawling, API, orchestration
+- **Node.js (API & Orchestration Layer):** networking, crawling, API, orchestration
 - **C++ (Core Search Engine):** indexing, ranking, heavy computation
 
 > [!NOTE]  
