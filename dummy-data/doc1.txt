@@ -1,0 +1,2 @@
+CMake is a build system generator.
+CMake mainly helps manage C and C++ projects.
