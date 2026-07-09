@@ -38,11 +38,22 @@ void tokenizeText();
 void buildPostingLists();
 
 int main() {
-    std::vector<std::string> readLines = readFromDoc("dummy-data", "doc1.txt");
+    // std::string file = "doc" + std::to_string(i + 1) + ".txt";
+    std::string file = "doc" + std::to_string(1) + ".txt";
+    std::vector<std::string> readLines = readFromDoc("dummy-data", file);
 
     for (int i = 0; i < readLines.size(); i++) {
         std::cout << readLines[i] << "\n";
     }
+    readLines.clear();
+
+    std::string file2 = "doc" + std::to_string(2) + ".txt";
+    readLines = readFromDoc("dummy-data", file2);
+
+    for (int i = 0; i < readLines.size(); i++) {
+        std::cout << readLines[i] << "\n";
+    }
+    readLines.clear();
 
     return 0;
 }
