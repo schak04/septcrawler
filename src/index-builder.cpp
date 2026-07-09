@@ -15,12 +15,18 @@
  * and then build postings + posting list -> inverted index
  * */
 
+#include <filesystem>
 #include <fstream>
 #include <iostream>
 #include <string>
 #include <vector>
 
-std::vector<std::string> readFromDoc(std::string dirName, std::string fileName) {
+// for future ref: https://cppreference.com/cpp/filesystem
+std::vector<std::string> readFromDoc(const std::string& path) {
+    for (const auto& dir_entry : std::filesystem::directory_iterator{
+             "dummy-data"}) {  // TODO: gotta replace with real docs storage location later
+        // to be continued from here
+    }
     std::string fileToRead = dirName + "/" + fileName;
     std::ifstream f(fileToRead);
 
