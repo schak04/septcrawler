@@ -8,6 +8,13 @@
  * postinglists -> inverted index -> figure out a way to store/persist the inverted index
  * */
 
+/*
+ * TODO: for every doc$.txt where $ = 1 to n, where n = number of docs
+ * the readFromDoc function must be able to read each of those and then
+ * store the text somewhere so I can manipulate the text (normalize and tokenize them)
+ * and then build postings + posting list -> inverted index
+ * */
+
 #include <fstream>
 #include <iostream>
 #include <string>
@@ -33,12 +40,12 @@ std::vector<std::string> readFromDoc(std::string dirName, std::string fileName) 
     return linesRead;
 }
 
+// return types and params incomplete, to be thought of and changed while writing these functions
 void normalizeText();
 void tokenizeText();
-void buildPostingLists();
+void generatePostings();
 
 int main() {
-    // std::string file = "doc" + std::to_string(i + 1) + ".txt";
     std::string file = "doc" + std::to_string(1) + ".txt";
     std::vector<std::string> readLines = readFromDoc("dummy-data", file);
 
