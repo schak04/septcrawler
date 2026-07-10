@@ -24,8 +24,7 @@
 // for future ref: https://cppreference.com/cpp/filesystem
 std::vector<std::vector<std::string>> readFromDocs(const std::string& path) {
     std::vector<std::vector<std::string>> docsMatrix;
-    for (const auto& doc : std::filesystem::directory_iterator{
-             path}) {  // TODO: gotta replace with real docs storage location later
+    for (const auto& doc : std::filesystem::directory_iterator{path}) {
         std::string fileToRead = doc.path();
         std::ifstream f(fileToRead);
 
