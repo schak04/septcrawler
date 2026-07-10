@@ -47,8 +47,11 @@ std::vector<std::vector<std::string>> readFromDocs(const std::string& path) {
     return docsMatrix;
 }
 
+std::string normalizeText(
+    std::vector<std::vector<std::string>>
+        text);  // decision so far: all the text -> normalized -> returned as a single string
+
 // return types and params incomplete, to be thought of and changed while writing these functions
-void normalizeText();
 void tokenizeText();
 void generatePostings();
 
