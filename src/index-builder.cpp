@@ -25,7 +25,7 @@
 std::vector<std::vector<std::string>> readFromDocs(const std::string& path) {
     std::vector<std::vector<std::string>> docsMatrix;
     for (const auto& doc : std::filesystem::directory_iterator{
-             "dummy-data"}) {  // TODO: gotta replace with real docs storage location later
+             path}) {  // TODO: gotta replace with real docs storage location later
         std::string fileToRead = doc.path();
         std::ifstream f(fileToRead);
 
@@ -54,7 +54,7 @@ void tokenizeText();
 void generatePostings();
 
 int main() {
-    std::vector<std::vector<std::string>> ansMat = readFromDocs("../dummy-data");
+    std::vector<std::vector<std::string>> ansMat = readFromDocs("dummy-data");
 
     for (std::vector<std::string> doc : ansMat) {
         for (std::string line : doc) {
