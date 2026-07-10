@@ -55,8 +55,8 @@ void generatePostings();
 int main() {
     std::vector<std::vector<std::string>> ansMat = readFromDocs("dummy-data");
 
-    for (std::vector<std::string> doc : ansMat) {
-        for (std::string line : doc) {
+    for (const std::vector<std::string>& doc : ansMat) {
+        for (const std::string& line : doc) {
             std::cout << line << '\n';
         }
         std::cout << '\n';
