@@ -22,28 +22,30 @@
 #include <vector>
 
 // for future ref: https://cppreference.com/cpp/filesystem
-std::vector<std::string> readFromDoc(const std::string& path) {
-    for (const auto& dir_entry : std::filesystem::directory_iterator{
+std::vector<std::vector<std::string>> readFromDocs(const std::string& path) {
+    std::vector<std::vector<std::string>> docsMatrix;
+    for (const auto& doc : std::filesystem::directory_iterator{
              "dummy-data"}) {  // TODO: gotta replace with real docs storage location later
-        // to be continued from here
+        std::string fileToRead = doc.path();
+        std::ifstream f(fileToRead);
+
+        if (!f.is_open()) {
+            std::cerr << "Error reading " + fileToRead + "\n";
+            return {};
+        }
+
+        std::vector<std::string> linesRead;
+        std::string s;
+        while (std::getline(f, s)) {
+            linesRead.push_back(s);
+        }
+
+        docsMatrix.push_back(linesRead);
+
+        f.close();
     }
-    std::string fileToRead = dirName + "/" + fileName;
-    std::ifstream f(fileToRead);
 
-    if (!f.is_open()) {
-        std::cerr << "Error reading " + fileToRead + "\n";
-        return {};
-    }
-
-    std::vector<std::string> linesRead;
-    std::string s;
-    while (std::getline(f, s)) {
-        linesRead.push_back(s);
-    }
-
-    f.close();
-
-    return linesRead;
+    return docsMatrix;
 }
 
 // return types and params incomplete, to be thought of and changed while writing these functions
@@ -52,21 +54,14 @@ void tokenizeText();
 void generatePostings();
 
 int main() {
-    std::string file = "doc" + std::to_string(1) + ".txt";
-    std::vector<std::string> readLines = readFromDoc("dummy-data", file);
+    std::vector<std::vector<std::string>> ansMat = readFromDocs("../dummy-data");
 
-    for (int i = 0; i < readLines.size(); i++) {
-        std::cout << readLines[i] << "\n";
+    for (std::vector<std::string> doc : ansMat) {
+        for (std::string line : doc) {
+            std::cout << line << '\n';
+        }
+        std::cout << '\n';
     }
-    readLines.clear();
-
-    std::string file2 = "doc" + std::to_string(2) + ".txt";
-    readLines = readFromDoc("dummy-data", file2);
-
-    for (int i = 0; i < readLines.size(); i++) {
-        std::cout << readLines[i] << "\n";
-    }
-    readLines.clear();
 
     return 0;
 }
