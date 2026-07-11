@@ -22,6 +22,8 @@
 #include <vector>
 
 // for future ref: https://cppreference.com/cpp/filesystem
+// TODO: need to get rid of the vector of string vectors and instead use a string vector
+// where each doc's text is stored in a single string, not a vector of strings
 std::vector<std::vector<std::string>> readFromDocs(const std::string& path) {
     std::vector<std::vector<std::string>> docsMatrix;
     for (const auto& doc : std::filesystem::directory_iterator{path}) {
@@ -47,23 +49,25 @@ std::vector<std::vector<std::string>> readFromDocs(const std::string& path) {
     return docsMatrix;
 }
 
-std::string normalizeText(
-    std::vector<std::vector<std::string>>
-        text);  // decision so far: all the text -> normalized -> returned as a single string
+// decision so far: a vector of strings containing all the docs' text -> normalized
+// -> returned in the form of a vector of strings
+std::vector<std::string> normalizeText(std::vector<std::string> text) {
+    // to be continued from here
+}
 
 // return types and params incomplete, to be thought of and changed while writing these functions
 void tokenizeText();
 void generatePostings();
 
 int main() {
-    std::vector<std::vector<std::string>> ansMat = readFromDocs("dummy-data");
+    // std::vector<std::vector<std::string>> ansMat = readFromDocs("dummy-data");
 
-    for (const std::vector<std::string>& doc : ansMat) {
-        for (const std::string& line : doc) {
-            std::cout << line << '\n';
-        }
-        std::cout << '\n';
-    }
+    // for (const std::vector<std::string>& doc : ansMat) {
+    //     for (const std::string& line : doc) {
+    //         std::cout << line << '\n';
+    //     }
+    //     std::cout << '\n';
+    // }
 
     return 0;
 }
