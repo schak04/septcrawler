@@ -49,15 +49,11 @@ std::vector<std::string> readFromDocs(const std::string& path) {
     return docsContent;
 }
 
-// helper for normalizeDocs func
 void normalizeDoc(std::string& doc) {
     std::transform(doc.begin(), doc.end(), doc.begin(),
                    [](unsigned char c) { return std::tolower(c); });
 }
-// a vector of strings containing all the docs' text
-// -> normalized (lowercasing only for now)
-// -> returned in the form of a vector of strings
-std::vector<std::string> normalizeDocs(std::vector<std::string>& rawDocs) {
+std::vector<std::string> normalizeDocs(const std::vector<std::string>& rawDocs) {
     std::vector<std::string> normalizedDocs;
 
     for (std::string& doc : rawDocs) {
@@ -68,8 +64,19 @@ std::vector<std::string> normalizeDocs(std::vector<std::string>& rawDocs) {
     return normalizedDocs;
 }
 
-// return types and params incomplete, to be thought of and changed while writing these functions
-void tokenizeDocs();
+// a string vector for each doc where the strings are the tokens of each doc
+// all of those vectors stored in a single vector and returned -> tokenizedDocs
+std::vector<std::vector<std::string>> tokenizeDocs(const std::vector<std::string> normalizedDocs) {
+    std::vector<std::vector<std::string>> tokenizedDocs;
+
+    for (const std::string& doc : normalizedDocs) {
+        std::vector<std::string> tokenizedDoc;
+
+        // while ()
+    }
+}
+
+// return type and param(s) incomplete, to be thought of and changed while writing this function
 void generatePostings();
 
 int main() {
