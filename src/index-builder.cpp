@@ -15,6 +15,7 @@
  * and then build postings + posting list -> inverted index
  * */
 
+#include <algorithm>
 #include <filesystem>
 #include <fstream>
 #include <iostream>
@@ -48,20 +49,34 @@ std::vector<std::string> readFromDocs(const std::string& path) {
     return docsContent;
 }
 
-// decision so far: a vector of strings containing all the docs' text -> normalized
+// helper for normalizeDocs func
+void normalizeDoc(std::string& doc) {
+    std::transform(doc.begin(), doc.end(), doc.begin(),
+                   [](unsigned char c) { return std::tolower(c); });
+}
+// a vector of strings containing all the docs' text
+// -> normalized (lowercasing only for now)
 // -> returned in the form of a vector of strings
-// std::vector<std::string> normalizeText(std::vector<std::string> text) {
-// to be continued from here
-//}
+std::vector<std::string> normalizeDocs(std::vector<std::string>& rawDocs) {
+    std::vector<std::string> normalizedDocs;
+
+    for (std::string& doc : rawDocs) {
+        normalizeDoc(doc);
+        normalizedDocs.push_back(doc);
+    }
+
+    return normalizedDocs;
+}
 
 // return types and params incomplete, to be thought of and changed while writing these functions
-void tokenizeText();
+void tokenizeDocs();
 void generatePostings();
 
 int main() {
-    std::vector<std::string> ans = readFromDocs("dummy-data");
+    std::vector<std::string> rawContent = readFromDocs("dummy-data");
+    std::vector<std::string> normalizedContent = normalizeDocs(rawContent);
 
-    for (const std::string& doc : ans) {
+    for (const std::string& doc : normalizedContent) {
         std::cout << doc << '\n';
     }
 
