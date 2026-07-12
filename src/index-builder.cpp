@@ -22,10 +22,9 @@
 #include <vector>
 
 // for future ref: https://cppreference.com/cpp/filesystem
-// TODO: need to get rid of the vector of string vectors and instead use a string vector
-// where each doc's text is stored in a single string, not a vector of strings
-std::vector<std::vector<std::string>> readFromDocs(const std::string& path) {
-    std::vector<std::vector<std::string>> docsMatrix;
+// one string in the vector corresponds to one doc's content
+std::vector<std::string> readFromDocs(const std::string& path) {
+    std::vector<std::string> docsContent;
     for (const auto& doc : std::filesystem::directory_iterator{path}) {
         std::string fileToRead = doc.path();
         std::ifstream f(fileToRead);
@@ -35,39 +34,36 @@ std::vector<std::vector<std::string>> readFromDocs(const std::string& path) {
             return {};
         }
 
-        std::vector<std::string> linesRead;
-        std::string s;
-        while (std::getline(f, s)) {
-            linesRead.push_back(s);
+        std::string docText = "";
+        std::string line;
+        while (std::getline(f, line)) {
+            docText += line + '\n';
         }
 
-        docsMatrix.push_back(linesRead);
+        docsContent.push_back(docText);
 
         f.close();
     }
 
-    return docsMatrix;
+    return docsContent;
 }
 
 // decision so far: a vector of strings containing all the docs' text -> normalized
 // -> returned in the form of a vector of strings
-std::vector<std::string> normalizeText(std::vector<std::string> text) {
-    // to be continued from here
-}
+// std::vector<std::string> normalizeText(std::vector<std::string> text) {
+// to be continued from here
+//}
 
 // return types and params incomplete, to be thought of and changed while writing these functions
 void tokenizeText();
 void generatePostings();
 
 int main() {
-    // std::vector<std::vector<std::string>> ansMat = readFromDocs("dummy-data");
+    std::vector<std::string> ans = readFromDocs("dummy-data");
 
-    // for (const std::vector<std::string>& doc : ansMat) {
-    //     for (const std::string& line : doc) {
-    //         std::cout << line << '\n';
-    //     }
-    //     std::cout << '\n';
-    // }
+    for (const std::string& doc : ans) {
+        std::cout << doc << '\n';
+    }
 
     return 0;
 }
