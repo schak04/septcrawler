@@ -10,16 +10,6 @@ This project is a search engine for retrieving learning resources (documentation
 > [!NOTE]  
 > Why "SeptCrawler"?  
 > I named this project "SeptCrawler" because, first of all, Sept comes from my name, and second of all, the crawler is where everything begins.
->
-> _"But Saptaparno, isn't this a full search engine? Why name it after just the crawler?"_
->
-> Fair question.
->
-> I named it so because the crawler is the origin of everything the search engine does. It discovers content. It feeds the index. Without it, there's nothing to parse, nothing to store, nothing to retrieve, nothing to rank, nothing to serve.
->
-> The rest of the system makes sense of what the crawler finds. So, that is why I feel the name makes sense and that is why I decided to name this project as SeptCrawler (even though the crawler isn't a part of the core search engine and is a supporting component).
->
-> Thanks for coming to my TED Talk >:D
 
 ---
 
