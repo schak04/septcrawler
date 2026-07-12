@@ -9,7 +9,7 @@ This project is a search engine for retrieving learning resources (documentation
 
 > [!NOTE]  
 > Why "SeptCrawler"?  
-> I named this project "SeptCrawler" because, first of all, Sept comes from my name, and second of all, the crawler is where everything begins.
+> I named this project **SeptCrawler** because, first of all, Sept comes from my name, and second of all, the crawler is where everything begins.
 
 ---
 
