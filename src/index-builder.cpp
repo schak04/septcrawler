@@ -19,6 +19,7 @@
 #include <filesystem>
 #include <fstream>
 #include <iostream>
+#include <sstream>
 #include <string>
 #include <vector>
 
@@ -53,12 +54,13 @@ void normalizeDoc(std::string& doc) {
     std::transform(doc.begin(), doc.end(), doc.begin(),
                    [](unsigned char c) { return std::tolower(c); });
 }
-std::vector<std::string> normalizeDocs(std::vector<std::string>& rawDocs) {
+std::vector<std::string> normalizeDocs(const std::vector<std::string>& rawDocs) {
     std::vector<std::string> normalizedDocs;
 
-    for (std::string& doc : rawDocs) {
-        normalizeDoc(doc);
-        normalizedDocs.push_back(doc);
+    for (std::string doc : rawDocs) {
+        std::string normalizedDoc = doc;
+        normalizeDoc(normalizedDoc);
+        normalizedDocs.push_back(normalizedDoc);
     }
 
     return normalizedDocs;
@@ -66,14 +68,22 @@ std::vector<std::string> normalizeDocs(std::vector<std::string>& rawDocs) {
 
 // a string vector for each doc where the strings are the tokens of each doc
 // all of those vectors stored in a single vector and returned -> tokenizedDocs
-std::vector<std::vector<std::string>> tokenizeDocs(const std::vector<std::string> normalizedDocs) {
+std::vector<std::vector<std::string>> tokenizeDocs(const std::vector<std::string>& normalizedDocs) {
     std::vector<std::vector<std::string>> tokenizedDocs;
 
     for (const std::string& doc : normalizedDocs) {
         std::vector<std::string> tokenizedDoc;
 
-        // while ()
+        std::stringstream ss(doc);
+        std::string word;
+        while (ss >> word) {
+            tokenizedDoc.push_back(word);
+        }
+
+        tokenizedDocs.push_back(tokenizedDoc);
     }
+
+    return tokenizedDocs;
 }
 
 // return type and param(s) incomplete, to be thought of and changed while writing this function
@@ -82,9 +92,13 @@ void generatePostings();
 int main() {
     std::vector<std::string> rawContent = readFromDocs("dummy-data");
     std::vector<std::string> normalizedContent = normalizeDocs(rawContent);
+    std::vector<std::vector<std::string>> tokenizedContent = tokenizeDocs(normalizedContent);
 
-    for (const std::string& doc : normalizedContent) {
-        std::cout << doc << '\n';
+    for (const auto& doc : tokenizedContent) {
+        for (const auto& token : doc) {
+            std::cout << token << ", ";
+        }
+        std::cout << '\n';
     }
 
     return 0;
