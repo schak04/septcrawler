@@ -57,7 +57,7 @@ void normalizeDoc(std::string& doc) {
 std::vector<std::string> normalizeDocs(const std::vector<std::string>& rawDocs) {
     std::vector<std::string> normalizedDocs;
 
-    for (std::string doc : rawDocs) {
+    for (const std::string& doc : rawDocs) {
         std::string normalizedDoc = doc;
         normalizeDoc(normalizedDoc);
         normalizedDocs.push_back(normalizedDoc);
@@ -96,7 +96,7 @@ int main() {
 
     for (const auto& doc : tokenizedContent) {
         for (const auto& token : doc) {
-            std::cout << token << ", ";
+            std::cout << token << ' ';
         }
         std::cout << '\n';
     }
