@@ -53,7 +53,7 @@ void normalizeDoc(std::string& doc) {
     std::transform(doc.begin(), doc.end(), doc.begin(),
                    [](unsigned char c) { return std::tolower(c); });
 }
-std::vector<std::string> normalizeDocs(const std::vector<std::string>& rawDocs) {
+std::vector<std::string> normalizeDocs(std::vector<std::string>& rawDocs) {
     std::vector<std::string> normalizedDocs;
 
     for (std::string& doc : rawDocs) {
