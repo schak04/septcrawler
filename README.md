@@ -99,6 +99,7 @@ The system is split into 3 layers:
 
 - https://www.geeksforgeeks.org/machine-learning/understanding-tf-idf-term-frequency-inverse-document-frequency
 - https://cppreference.com/cpp/filesystem
+- https://en.wikipedia.org/wiki/Inverted_index
 
 ---
 
