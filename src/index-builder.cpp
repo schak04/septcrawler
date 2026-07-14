@@ -16,6 +16,7 @@
  * */
 
 #include <algorithm>
+#include <cctype>
 #include <filesystem>
 #include <fstream>
 #include <iostream>
@@ -59,6 +60,11 @@ std::vector<std::string> normalizeDocs(const std::vector<std::string>& rawDocs) 
 
     for (const std::string& doc : rawDocs) {
         std::string normalizedDoc = doc;
+
+        normalizedDoc.erase(std::remove_if(normalizedDoc.begin(), normalizedDoc.end(),
+                                           [](unsigned char c) { return std::ispunct(c); }),
+                            normalizedDoc.end());
+
         normalizeDoc(normalizedDoc);
         normalizedDocs.push_back(normalizedDoc);
     }
@@ -86,7 +92,6 @@ std::vector<std::vector<std::string>> tokenizeDocs(const std::vector<std::string
     return tokenizedDocs;
 }
 
-// return type and param(s) incomplete, to be thought of and changed while writing this function
 void generatePostings();
 
 int main() {
