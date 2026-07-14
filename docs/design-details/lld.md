@@ -36,7 +36,7 @@ class PostingList {
 
 ## Posting
 
-A posting represents a single document within a posting list. It stores information about **one term in one document**.
+A posting represents a single entry in a posting list. It stores information about **one term in one document**.
 
 ```cpp
 class Posting {
