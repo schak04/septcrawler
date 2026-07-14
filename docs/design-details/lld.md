@@ -38,6 +38,8 @@ class PostingList {
 
 A posting represents a single entry in a posting list. It stores information about **one term in one document**.
 
+> One posting for every (term, document) pair.
+
 ```cpp
 class Posting {
     int docId;
