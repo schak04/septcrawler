@@ -1,20 +1,3 @@
-// using dummy docs for now, so:
-// dummy docs -> index builder
-// later when the crawler and parser are implemented, those will replace this:
-// crawler -> parser -> REAL parsed docs -> index builder
-
-/*
- * TODO: read from the dummy data (docs) for now -> normalize and tokenize the text -> build
- * postinglists -> inverted index -> figure out a way to store/persist the inverted index
- * */
-
-/*
- * TODO: for every doc$.txt where $ = 1 to n, where n = number of docs
- * the readFromDoc function must be able to read each of those and then
- * store the text somewhere so I can manipulate the text (normalize and tokenize them)
- * and then build postings + posting list -> inverted index
- * */
-
 #include <algorithm>
 #include <cctype>
 #include <filesystem>
@@ -23,6 +6,10 @@
 #include <sstream>
 #include <string>
 #include <vector>
+
+#include "../headers/inverted-index.hpp"
+#include "../headers/posting-list.hpp"
+#include "../headers/posting.hpp"
 
 // for future ref: https://cppreference.com/cpp/filesystem
 // one string in the vector corresponds to one doc's content
@@ -52,8 +39,7 @@ std::vector<std::string> readFromDocs(const std::string& path) {
 }
 
 void normalizeDoc(std::string& doc) {
-    std::transform(doc.begin(), doc.end(), doc.begin(),
-                   [](unsigned char c) { return std::tolower(c); });
+    std::transform(doc.begin(), doc.end(), doc.begin(), [](unsigned char c) { return std::tolower(c); });
 }
 std::vector<std::string> normalizeDocs(const std::vector<std::string>& rawDocs) {
     std::vector<std::string> normalizedDocs;
@@ -61,9 +47,7 @@ std::vector<std::string> normalizeDocs(const std::vector<std::string>& rawDocs) 
     for (const std::string& doc : rawDocs) {
         std::string normalizedDoc = doc;
 
-        normalizedDoc.erase(std::remove_if(normalizedDoc.begin(), normalizedDoc.end(),
-                                           [](unsigned char c) { return std::ispunct(c); }),
-                            normalizedDoc.end());
+        normalizedDoc.erase(std::remove_if(normalizedDoc.begin(), normalizedDoc.end(), [](unsigned char c) { return std::ispunct(c); }), normalizedDoc.end());
 
         normalizeDoc(normalizedDoc);
         normalizedDocs.push_back(normalizedDoc);
@@ -92,7 +76,22 @@ std::vector<std::vector<std::string>> tokenizeDocs(const std::vector<std::string
     return tokenizedDocs;
 }
 
-void generatePostings();
+InvertedIndex buildInvertedIndex(const std::vector<std::vector<std::string>>& processedDocs) {
+    int docId;
+    for (int docIdx = 0; docIdx < processedDocs.size(); docIdx++) {
+        docId = docIdx + 1;
+
+        std::unordered_map<std::string, int> termFreq;  // TODO: term -> {termFreq, positions}
+        for (const std::string& token : processedDocs[docIdx]) {
+            termFreq[token]++;
+        }
+
+        std::vector<int> positions;
+        for (int tokenIdx = 0; tokenIdx < processedDocs[docIdx].size(); tokenIdx++) {
+            // WIP
+        }
+    }
+}
 
 int main() {
     std::vector<std::string> rawContent = readFromDocs("dummy-data");
