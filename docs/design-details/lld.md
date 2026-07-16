@@ -99,7 +99,7 @@ During indexing:
 1. Documents are fetched by the crawler.
 2. HTML content is parsed into usable text.
 3. Clean documents are written to Raw Documents storage.
-4. The Index Builder normalizes the text, tokenizes it, and generates posting lists.
+4. The Index Builder normalizes the text, tokenizes it, generates posting lists, and constructs the inverted index.
 5. The inverted index is written to persistent storage.
 
 ---
@@ -147,7 +147,7 @@ Execution flow: `User -> Search API -> Query Processor -> Retrieval Engine (<-> 
 
 - Normalizing document text
 - Tokenizing documents
-- Building posting lists
+- Generating postings and posting lists
 - Constructing the inverted index
 - Writing the index to persistent storage
 
