@@ -2,7 +2,8 @@
 
 This document describes the internal design of my search engine. In this, I'll be documenting the planned internals, so as to have a clear structure in my mind before starting the development phase.
 
-> I'll be writing code snippets for illustration, but they may be subject to change while coding.
+> I'll be writing code snippets for illustration, but they may be subject to change while coding.  
+> I'll keep updating the design docs based on that.
 
 ---
 
