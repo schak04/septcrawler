@@ -88,7 +88,12 @@ InvertedIndex buildInvertedIndex(const std::vector<std::vector<std::string>>& pr
 
         std::vector<int> positions;
         for (int tokenIdx = 0; tokenIdx < processedDocs[docIdx].size(); tokenIdx++) {
-            // WIP
+            /*
+             * WIP:
+             * Problem: positions belong to each term, not the document itself
+             * A single vector of ints won't do.
+             * Need an intermediate per-doc structure that maps each term -> both its freq and its positions.
+             * */
         }
     }
 }
