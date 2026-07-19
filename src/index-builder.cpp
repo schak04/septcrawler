@@ -76,6 +76,16 @@ std::vector<std::vector<std::string>> tokenizeDocs(const std::vector<std::string
     return tokenizedDocs;
 }
 
+/*
+ * for each doc in processedDocs
+ *      assign docId
+ *      build a map: term -> {termFreq, positions}
+ *
+ *      for each unique term in the map
+ *          create a Posting
+ *          append the Posting to the PostingList for that term in the InvertedIndex
+ * */
+
 InvertedIndex buildInvertedIndex(const std::vector<std::vector<std::string>>& processedDocs) {
     int docId;
     for (int docIdx = 0; docIdx < processedDocs.size(); docIdx++) {
