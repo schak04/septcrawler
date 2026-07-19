@@ -86,10 +86,10 @@ std::vector<std::vector<std::string>> tokenizeDocs(const std::vector<std::string
  *          append the Posting to the PostingList for that term in the InvertedIndex
  * */
 
-typedef struct termFreqAndPos {
+struct TermFreqAndPos {
     int termFreq;
     std::vector<int> positions;
-} fp;
+};
 
 InvertedIndex buildInvertedIndex(const std::vector<std::vector<std::string>>& processedDocs) {
     int docId;
