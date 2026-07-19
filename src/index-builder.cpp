@@ -96,20 +96,19 @@ InvertedIndex buildInvertedIndex(const std::vector<std::vector<std::string>>& pr
     for (int docIdx = 0; docIdx < processedDocs.size(); docIdx++) {
         docId = docIdx + 1;
 
-        std::unordered_map<std::string, int> termFreq;  // TODO: term -> {termFreq, positions}
-        for (const std::string& token : processedDocs[docIdx]) {
-            termFreq[token]++;
+        std::unordered_map<std::string, TermFreqAndPos> termFreqAndPosMap;  // TODO: term -> {termFreq, positions}
+        for (const std::string& term : processedDocs[docIdx]) {
+            termFreqAndPosMap[term].termFreq++;
+            termFreqAndPosMap[term].positions.push_back();
+            // WIP: push back the index of the term
+            // Problem: how do I get the index of a term in a range-for loop?
+            // If using a traditional for loop, how do I save the positions term-wise?
+            // Brain too fried to think anymore tonight.
         }
 
-        std::vector<int> positions;
-        for (int tokenIdx = 0; tokenIdx < processedDocs[docIdx].size(); tokenIdx++) {
-            /*
-             * WIP:
-             * Problem: positions belong to each term, not the document itself
-             * A single vector of ints won't do.
-             * Need an intermediate per-doc structure that maps each term -> both its freq and its positions.
-             * */
-        }
+        // std::vector<int> positions;
+        // for (int tokenIdx = 0; tokenIdx < processedDocs[docIdx].size(); tokenIdx++) {
+        // }
     }
 }
 
