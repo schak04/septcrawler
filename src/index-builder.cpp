@@ -76,16 +76,9 @@ std::vector<std::vector<std::string>> tokenizeDocs(const std::vector<std::string
     return tokenizedDocs;
 }
 
-/*
- * for each doc in processedDocs
- *      assign docId
- *      build a map: term -> {termFreq, positions}
- *
- *      for each unique term in the map
- *          create a Posting
- *          append the Posting to the PostingList for that term in the InvertedIndex
- * */
+// finally actual indexing work
 
+// temp per-doc stats for generating postings
 struct TermFreqAndPos {
     int termFreq;
     std::vector<int> positions;
@@ -95,7 +88,6 @@ InvertedIndex buildInvertedIndex(const std::vector<std::vector<std::string>>& pr
     InvertedIndex invertedIndex;
 
     int docId;
-    PostingList postingList;
     for (int docIdx = 0; docIdx < processedDocs.size(); docIdx++) {
         docId = docIdx + 1;
 
@@ -110,26 +102,17 @@ InvertedIndex buildInvertedIndex(const std::vector<std::vector<std::string>>& pr
             const std::string term = termFreqAndPosMapEntry.first;
             const TermFreqAndPos freqAndPos = termFreqAndPosMapEntry.second;
 
-            // posting generation for the term
             Posting posting;
             posting.docId = docId;
             posting.termFreq = freqAndPos.termFreq;
             posting.positions = freqAndPos.positions;
 
-            // append posting to posting list
-            // postingList.entries.push_back(posting);
-            // postingList.totalFrequency += posting.termFreq;
-            /*
-             * WIP:
-             * A Posting is generated per (term, document) pair.
-             * A PostingList exists per unique term across the entire corpus.
-             * I'm currently generating postings per document, but where should each
-             * posting be accumulated so that all postings for the same term end up
-             * in the same PostingList?
-             * To be figured out and coded tomorrow.
-             */
+            invertedIndex.index[term].entries.push_back(posting);
+            invertedIndex.index[term].totalFrequency += posting.termFreq;
         }
     }
+
+    return invertedIndex;
 }
 
 int main() {
