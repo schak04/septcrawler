@@ -76,7 +76,7 @@ std::vector<std::vector<std::string>> tokenizeDocs(const std::vector<std::string
     return tokenizedDocs;
 }
 
-// finally actual indexing work
+// finally the actual indexing work
 
 // temp per-doc stats for generating postings
 struct TermFreqAndPos {
@@ -104,11 +104,11 @@ InvertedIndex buildInvertedIndex(const std::vector<std::vector<std::string>>& pr
 
             Posting posting;
             posting.docId = docId;
-            posting.termFreq = freqAndPos.termFreq;
+            posting.termFrequency = freqAndPos.termFreq;
             posting.positions = freqAndPos.positions;
 
             invertedIndex.index[term].entries.push_back(posting);
-            invertedIndex.index[term].totalFrequency += posting.termFreq;
+            invertedIndex.index[term].totalFrequency += posting.termFrequency;
         }
     }
 
