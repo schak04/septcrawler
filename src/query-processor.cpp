@@ -1,7 +1,10 @@
 /*
- * TODO: use a dummy query for now, actual user queries to be used once the API layer is integrated
- * the work here is fairly simple:
- * query -> comes in here -> gets processed (normalized and tokenized) -> is sent to the retrieval engine
+ * NOTE: query -> comes in here -> gets processed (normalized and tokenized) -> is sent to the retrieval engine
+ *
+ * DONE: using dummy queries for now, wrote functions to process the query
+ *
+ * TODO: send processed query/queries to the retrieval engine
+ * actual user queries to be used once the API layer is integrated
  * */
 
 #include <algorithm>
@@ -35,7 +38,13 @@ std::vector<std::string> tokenizeQuery(const std::string& normalizedQuery) {
     return tokenizedQuery;
 }
 
-// TODO: pass the tokenizedQuery to the retrieval engine
+// WIP: pass the tokenizedQuery to the retrieval engine
+std::vector<std::string> passToRetrievalEngine() {
+    std::string normalizedQuery = normalizeQuery(QUERY);
+    std::vector<std::string> tokenizedQuery = tokenizeQuery(normalizedQuery);
+
+    return tokenizedQuery;
+}
 
 int main() {
     std::string normalizedQuery = normalizeQuery(QUERY);
