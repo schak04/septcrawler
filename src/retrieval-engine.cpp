@@ -5,8 +5,14 @@
  * send it to the ranker
  * */
 
+#include <iostream>
+#include <string>
+#include <vector>
+
+#include "../headers/query-processor.hpp"
+
 int main() {
-    // ...
+    std::vector<std::string> processedQuery = getProcessedQuery();
 
     return 0;
 }
