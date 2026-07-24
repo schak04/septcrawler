@@ -1,10 +1,5 @@
 /*
- * NOTE: query -> comes in here -> gets processed (normalized and tokenized) -> is sent to the retrieval engine
- *
- * DONE: using dummy queries for now, wrote functions to process the query
- *
- * TODO: send processed query/queries to the retrieval engine
- * actual user queries to be used once the API layer is integrated
+ * TODO: actual user queries to be used once the API layer is integrated
  * */
 
 #include <algorithm>
@@ -13,6 +8,7 @@
 #include <string>
 #include <vector>
 
+// TODO: dummy query/queries to be replaced on the integration for the API layer
 // #define QUERY "GNU Debugger"
 #define QUERY "Some query related to something educational with %#* () special characters"
 
@@ -38,8 +34,8 @@ std::vector<std::string> tokenizeQuery(const std::string& normalizedQuery) {
     return tokenizedQuery;
 }
 
-// WIP: pass the tokenizedQuery to the retrieval engine
-std::vector<std::string> passToRetrievalEngine() {
+// for the retrieval engine
+std::vector<std::string> getProcessedQuery() {
     std::string normalizedQuery = normalizeQuery(QUERY);
     std::vector<std::string> tokenizedQuery = tokenizeQuery(normalizedQuery);
 
