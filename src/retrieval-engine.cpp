@@ -9,10 +9,32 @@
 #include <string>
 #include <vector>
 
+#include "../headers/inverted-index.hpp"
 #include "../headers/query-processor.hpp"
 
+// TODO: dummy query processor to retrieval engine connection
+std::vector<std::string> processedQuery = getProcessedQuery();
+
+// TODO: replace with real inverted index and real data once the storage layer and API layer are implemented
+std::vector<std::string> rawContent = readFromDocs("dummy-data");
+std::vector<std::string> normalizedContent = normalizeDocs(rawContent);
+std::vector<std::vector<std::string>> tokenizedContent = tokenizeDocs(normalizedContent);
+InvertedIndex invidx = buildInvertedIndex(tokenizedContent);
+
+/*
+ * NOTE: need to look up each query token/term in the inverted index
+ * AND query -> find docs present in all posting lists
+ * OR query -> find docs present in any of the posting lists
+ * Result -> Candidate Documents
+ *
+ * flow:
+ * processed query -> look up posting list for each term
+ * -> combine posting lists according to query semantics
+ * -> candidate doc IDs + attached stats -> send to ranker
+ */
+
 int main() {
-    std::vector<std::string> processedQuery = getProcessedQuery();
+    // ...
 
     return 0;
 }
