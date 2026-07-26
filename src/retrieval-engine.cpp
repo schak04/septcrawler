@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "../headers/inverted-index.hpp"
+#include "../headers/posting-list.hpp"
 #include "../headers/query-processor.hpp"
 
 // TODO: dummy query processor to retrieval engine connection
@@ -22,17 +23,29 @@ std::vector<std::vector<std::string>> tokenizedContent = tokenizeDocs(normalized
 InvertedIndex invidx = buildInvertedIndex(tokenizedContent);
 
 /*
- * NOTE: need to look up each query token/term in the inverted index
+ * TODO: need to look up each query token/term in the inverted index
  * AND query -> find docs present in all posting lists
  * OR query -> find docs present in any of the posting lists
  * DECISION (v1): I'll use AND query semantics.
  * Result -> Candidate Documents
  *
- * flow:
+ * NOTE:
  * processed query -> look up posting list for each term
  * -> combine posting lists according to query semantics
  * -> candidate doc IDs + attached stats -> send to ranker
  */
+
+// posting list(s) lookup
+std::vector<postinglist> lookuppostinglists() {
+    std::vector<postinglist> postinglistsbasedonquerytokens;
+    for (const std::string& querytoken : processedquery) {
+        postinglistsbasedonquerytokens.push_back(invidx.index[querytoken]);
+    }
+
+    return postinglistsbasedonquerytokens;
+}
+
+// WIP: candidate docs creation
 
 int main() {
     // ...
