@@ -45,7 +45,12 @@ std::vector<PostingList> lookupPostingLists() {
     return postingListsBasedOnQueryTokens;
 }
 
-// WIP: candidate docs creation
+// candidate docs creation
+std::vector<CandidateDocument> generateCandidateDocuments() {
+    std::vector<PostingList> postingListsToBeIntersected = lookupPostingLists();
+
+    // WIP: I want docs that appear in all posting lists to produce candidate docs
+}
 
 int main() {
     // ...
