@@ -9,6 +9,7 @@
 #include <string>
 #include <vector>
 
+#include "../headers/candidate-doc.hpp"
 #include "../headers/inverted-index.hpp"
 #include "../headers/posting-list.hpp"
 #include "../headers/query-processor.hpp"
