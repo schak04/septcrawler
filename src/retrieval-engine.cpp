@@ -36,13 +36,13 @@ InvertedIndex invidx = buildInvertedIndex(tokenizedContent);
  */
 
 // posting list(s) lookup
-std::vector<postinglist> lookuppostinglists() {
-    std::vector<postinglist> postinglistsbasedonquerytokens;
-    for (const std::string& querytoken : processedquery) {
-        postinglistsbasedonquerytokens.push_back(invidx.index[querytoken]);
+std::vector<PostingList> lookupPostingLists() {
+    std::vector<PostingList> postingListsBasedOnQueryTokens;
+    for (const std::string& queryToken : processedQuery) {
+        postingListsBasedOnQueryTokens.push_back(invidx.index[queryToken]);
     }
 
-    return postinglistsbasedonquerytokens;
+    return postingListsBasedOnQueryTokens;
 }
 
 // WIP: candidate docs creation
