@@ -25,6 +25,7 @@ InvertedIndex invidx = buildInvertedIndex(tokenizedContent);
  * NOTE: need to look up each query token/term in the inverted index
  * AND query -> find docs present in all posting lists
  * OR query -> find docs present in any of the posting lists
+ * DECISION (v1): I'll use AND query semantics.
  * Result -> Candidate Documents
  *
  * flow:

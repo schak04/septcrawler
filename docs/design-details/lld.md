@@ -117,10 +117,13 @@ Execution flow: `User -> Search API -> Query Processor -> Retrieval Engine (<-> 
 2. The Query Processor normalizes the query. Example: "GNU Debugger" becomes "gnu debugger".
 3. It then tokenizes the query. So: `{"gnu", "debugger"}`
 4. The Retrieval Engine looks up each query term in the inverted index.
-5. It then merges posting lists and generates candidate documents together with lightweight statistics required for ranking.
+5. It then intersects posting lists (AND query semantics) and generates candidate documents together with lightweight statistics required for ranking.
 6. The Ranker scores each candidate document.
 
-> I plan to use TF-IDF in v1 as the initial ranking algorithm.
+> [!NOTE]  
+> For v1, milti-term queries will be treated as AND queries.  
+> A document must contain all query terms to become a candidate document.  
+> Also, I plan to use TF-IDF in v1 as the initial ranking algorithm.
 
 7. Candidate documents are sorted by relevance and returned to the user.
 
@@ -165,7 +168,7 @@ Execution flow: `User -> Search API -> Query Processor -> Retrieval Engine (<-> 
 
 - Reading the inverted index
 - Looking up posting lists
-- Merging posting lists
+- Intersecting posting lists (AND query semantics for v1)
 - Producing candidate documents
 
 > The Retrieval Engine is the only component that directly accesses the inverted index during query execution.
