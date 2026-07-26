@@ -78,7 +78,7 @@ They are **not stored** anywhere in the storage layer.
 ```cpp
 struct CandidateDocument {
     int docId;
-    int matchedTerms;
+    int matchedTermsCount;
 };
 ```
 
