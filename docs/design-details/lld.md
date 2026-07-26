@@ -79,11 +79,10 @@ They are **not stored** anywhere in the storage layer.
 struct CandidateDocument {
     int docId;
     int matchedTerms;
-    // additional lightweight statistics used for ranking
 };
 ```
 
-> The retrieval engine retrieves the posting list for each query term, merges or intersects them, and produces a set of candidate documents for the ranker. Then, the ranker scores them to determine the final search results.
+> The retrieval engine retrieves the posting list for each query term, intersects them, and produces a set of candidate documents for the ranker. Then, the ranker scores them to determine the final search results.
 
 ---
 
@@ -121,7 +120,7 @@ Execution flow: `User -> Search API -> Query Processor -> Retrieval Engine (<-> 
 6. The Ranker scores each candidate document.
 
 > [!NOTE]  
-> For v1, milti-term queries will be treated as AND queries.  
+> For v1, multi-term queries will be treated as AND queries.  
 > A document must contain all query terms to become a candidate document.  
 > Also, I plan to use TF-IDF in v1 as the initial ranking algorithm.
 
