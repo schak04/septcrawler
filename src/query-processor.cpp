@@ -11,8 +11,8 @@
 #include <vector>
 
 // TODO: dummy query/queries to be replaced on the integration for the API layer
-// #define QUERY "GNU Debugger"
-#define QUERY "Some query related to something educational with %#* () special characters"
+// #define QUERY "Some query related to something educational with %#* () special characters"
+#define QUERY "GNU Debugger"
 
 std::string normalizeQuery(const std::string& rawQuery) {
     std::string normalizedQuery = rawQuery;

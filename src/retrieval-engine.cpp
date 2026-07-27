@@ -51,9 +51,28 @@ std::vector<PostingList> lookupPostingLists() {
 
 // candidate docs creation
 std::vector<CandidateDocument> generateCandidateDocuments() {
+    std::vector<CandidateDocument> candidateDocs;
     std::vector<PostingList> postingListsToBeIntersected = lookupPostingLists();
 
-    // WIP: I want docs that appear in all posting lists to produce candidate docs
+    // counts how many posting lists each doc appears in
+    std::unordered_map<int, int> matchedTermsCountMap;  // docId -> matchedTermsCount
+
+    for (const PostingList& postingList : postingListsToBeIntersected) {
+        for (const Posting& posting : postingList.entries) {
+            matchedTermsCountMap[posting.docId]++;
+        }
+    }
+
+    for (const auto& entry : matchedTermsCountMap) {
+        if (entry.second == (int)postingListsToBeIntersected.size()) {
+            CandidateDocument candidateDoc;
+            candidateDoc.docId = entry.first;
+            candidateDoc.matchedTermsCount = entry.second;
+            candidateDocs.push_back(candidateDoc);
+        }
+    }
+
+    return candidateDocs;
 }
 
 int runRetrievalEngine() {
@@ -62,7 +81,7 @@ int runRetrievalEngine() {
     std::vector<CandidateDocument> cd = generateCandidateDocuments();
 
     for (const auto& c : cd) {
-        std::cout << c.docId << " " << c.matchedTermsCount << '\n';
+        std::cout << "docId: " << c.docId << " | matched terms count: " << c.matchedTermsCount << '\n';
     }
 
     return 0;
