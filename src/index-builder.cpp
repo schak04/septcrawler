@@ -5,6 +5,8 @@
  * write inverted index to disk
  * */
 
+#include "../headers/core-components/index-builder.hpp"
+
 #include <algorithm>
 #include <cctype>
 #include <filesystem>
@@ -14,7 +16,6 @@
 #include <string>
 #include <vector>
 
-#include "../headers/core-components/index-builder.hpp"
 #include "../headers/data-structures/inverted-index.hpp"
 #include "../headers/data-structures/posting-list.hpp"
 #include "../headers/data-structures/posting.hpp"
@@ -96,7 +97,7 @@ InvertedIndex buildInvertedIndex(const std::vector<std::vector<std::string>>& pr
     InvertedIndex invertedIndex;
 
     int docId;
-    for (int docIdx = 0; docIdx < processedDocs.size(); docIdx++) {
+    for (int docIdx = 0; docIdx < (int)processedDocs.size(); docIdx++) {
         docId = docIdx + 1;
 
         std::unordered_map<std::string, TermFreqAndPos> termFreqAndPosMap;  // term -> {termFreq, positions}
@@ -126,7 +127,7 @@ InvertedIndex buildInvertedIndex(const std::vector<std::vector<std::string>>& pr
 // TODO: inverted index to be written to disk (storage layer)
 
 int runIndexBuilder() {
-    std::cout << "RUNNING INDEX BUILDER...\n";
+    std::cout << "\nRUNNING INDEX BUILDER...\n";
 
     std::vector<std::string> rawContent = readFromDocs("dummy-data");
     std::vector<std::string> normalizedContent = normalizeDocs(rawContent);

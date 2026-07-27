@@ -2,13 +2,13 @@
  * TODO: actual user queries to be used once the API layer is integrated
  * */
 
+#include "../headers/core-components/query-processor.hpp"
+
 #include <algorithm>
 #include <iostream>
 #include <sstream>
 #include <string>
 #include <vector>
-
-#include "../headers/core-components/query-processor.hpp"
 
 // TODO: dummy query/queries to be replaced on the integration for the API layer
 // #define QUERY "GNU Debugger"
@@ -45,7 +45,7 @@ std::vector<std::string> getProcessedQuery() {
 }
 
 int runQueryProcessor() {
-    std::cout << "RUNNING QUERY PROCESSOR...\n";
+    std::cout << "\nRUNNING QUERY PROCESSOR...\n";
 
     std::string normalizedQuery = normalizeQuery(QUERY);
     std::vector<std::string> tokenizedQuery = tokenizeQuery(normalizedQuery);
