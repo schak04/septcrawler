@@ -14,9 +14,10 @@
 #include <string>
 #include <vector>
 
-#include "../headers/inverted-index.hpp"
-#include "../headers/posting-list.hpp"
-#include "../headers/posting.hpp"
+#include "../headers/core-components/index-builder.hpp"
+#include "../headers/data-structures/inverted-index.hpp"
+#include "../headers/data-structures/posting-list.hpp"
+#include "../headers/data-structures/posting.hpp"
 
 // for future ref: https://cppreference.com/cpp/filesystem
 // one string in the vector corresponds to one doc's content
@@ -124,7 +125,9 @@ InvertedIndex buildInvertedIndex(const std::vector<std::vector<std::string>>& pr
 
 // TODO: inverted index to be written to disk (storage layer)
 
-int main() {
+int runIndexBuilder() {
+    std::cout << "RUNNING INDEX BUILDER...\n";
+
     std::vector<std::string> rawContent = readFromDocs("dummy-data");
     std::vector<std::string> normalizedContent = normalizeDocs(rawContent);
     std::vector<std::vector<std::string>> tokenizedContent = tokenizeDocs(normalizedContent);
@@ -136,8 +139,6 @@ int main() {
     //     }
     //     std::cout << '\n';
     // }
-
-    std::cout << "inverted index testing:\n";
 
     for (const auto& invidxentry : invidx.index) {
         std::cout << "for term: " << invidxentry.first << '\n';

@@ -9,10 +9,12 @@
 #include <string>
 #include <vector>
 
-#include "../headers/candidate-doc.hpp"
-#include "../headers/inverted-index.hpp"
-#include "../headers/posting-list.hpp"
-#include "../headers/query-processor.hpp"
+#include "../headers/data-structures/candidate-doc.hpp"
+#include "../headers/core-components/index-builder.hpp"
+#include "../headers/data-structures/inverted-index.hpp"
+#include "../headers/data-structures/posting-list.hpp"
+#include "../headers/core-components/query-processor.hpp"
+#include "../headers/core-components/retrieval-engine.hpp"
 
 // TODO: dummy query processor to retrieval engine connection
 std::vector<std::string> processedQuery = getProcessedQuery();
@@ -53,8 +55,14 @@ std::vector<CandidateDocument> generateCandidateDocuments() {
     // WIP: I want docs that appear in all posting lists to produce candidate docs
 }
 
-int main() {
-    // ...
+int runRetrievalEngine() {
+    std::cout << "RUNNING RETRIEVAL ENGINE...\n";
+
+    std::vector<CandidateDocument> cd = generateCandidateDocuments();
+
+    for (const auto& c : cd) {
+        std::cout << c.docId << " " << c.matchedTermsCount << '\n';
+    }
 
     return 0;
 }

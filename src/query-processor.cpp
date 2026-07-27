@@ -8,6 +8,8 @@
 #include <string>
 #include <vector>
 
+#include "../headers/core-components/query-processor.hpp"
+
 // TODO: dummy query/queries to be replaced on the integration for the API layer
 // #define QUERY "GNU Debugger"
 #define QUERY "Some query related to something educational with %#* () special characters"
@@ -42,7 +44,9 @@ std::vector<std::string> getProcessedQuery() {
     return tokenizedQuery;
 }
 
-int main() {
+int runQueryProcessor() {
+    std::cout << "RUNNING QUERY PROCESSOR...\n";
+
     std::string normalizedQuery = normalizeQuery(QUERY);
     std::vector<std::string> tokenizedQuery = tokenizeQuery(normalizedQuery);
 
