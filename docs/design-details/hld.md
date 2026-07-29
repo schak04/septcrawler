@@ -10,13 +10,13 @@ The system is divided into 2 independent pipelines: an offline ingestion pipelin
 
 - **User <-> (Web Browser / CLI):** Sends search queries and receives ranked results.
 
-### Node.js API & Orchestration Layer
+### Go Service Layer
 
-> This layer is responsible for coordination, not heavy computation.
+> This layer handles network I/O, service coordination, and client request routing.
 
-- **Search API:** Entry point for all queries. Sends queries to the C++ engine and returns final results at the end.
-- **Web Crawler:** Responsible for fetching target resources during ingestion.
-- **HTML Parser:** Extracts usable text and metadata from HTML.
+- **Search API:** Entry point for all search requests. Handles client request routing to the C++ search engine and returns ranked results.
+- **Web Crawler:** Responsible for fetching target web pages during the offline ingestion phase.
+- **HTML Parser:** Extracts structured text and metadata from fetched web pages for indexing.
 
 ### C++ Search Engine Layer
 

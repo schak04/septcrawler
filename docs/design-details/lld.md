@@ -139,8 +139,8 @@ Execution flow: `User -> Search API -> Query Processor -> Retrieval Engine (<-> 
 
 ## HTML Parser
 
-- Extracting text
-- Extracting useful metadata
+- Parsing HTML documents and extracting clean text
+- Extracting useful metadata (title, headings, domain metadata)
 - Producing clean documents for indexing
 - Writing clean documents to Raw Documents storage
 

@@ -1,6 +1,6 @@
 # SeptCrawler
 
-This project is a search engine for retrieving learning resources (documentation, references, tutorials, and discussion forums). I'm writing the search engine's core from scratch in C++, with Node.js for the API, crawler & parser. The project is designed to crawl and index learning resources, allowing users to search across them through a focused interface without having them polluted by entertainment-related results.
+This project is a search engine for retrieving learning resources (documentation, references, tutorials, and discussion forums). I'm writing the search engine's core from scratch in C++, while the Go Service Layer (Search API, web crawler, HTML parser, and service coordination) is planned to be implemented in Go. The system is designed to crawl and index learning resources, allowing users to search across them through a focused interface without having results polluted by entertainment-related content.
 
 > [!IMPORTANT]  
 > **Project Status: In Active Development Phase**  
@@ -24,17 +24,10 @@ Along the way, my goal is to make something that could be useful for learners an
 
 ## Technology Choices
 
-The decision of using a combination of C++ and Node.js comes from the need to separate the system into performance-critical components and orchestration components.  
-The search engine core (including query processing, indexing, retrieval, and ranking) is to be implemented in C++ because these components rely heavily on efficient data structures, memory management, and low-level control.  
-Node.js is used for the web-facing and coordination layer, including the crawler, HTML parser, and search API, where networking, asynchronous operations, and ecosystem support are more important than raw performance.  
-This separation keeps the architecture modular while allowing each component to use technologies suited to its responsibilities.
+I chose C++ and Go to keep the search engine core separate from the backend service layer.
 
-> _"But Saptaparno, can you really say you're making this **from scratch** if you're using Node.js for the API layer?"_  
-> Well, hear me out...  
-> When I say _from scratch_, I'm referring to the **search engine itself**. Not every supporting piece.  
-> The core of SeptCrawler, including the inverted index, indexing pipeline, query processing, retrieval engine, ranking pipeline, is being designed and implemented by me from the ground up in C++. Node.js is for writing the supporting components.  
-> My goal with this project is to learn how search engines work internally. That means spending my time building the search engine, not rebuilding the supporting components.  
-> That doesn't mean those supporting components aren't interesting to me. Quite the opposite. I do want to build things like HTTP servers, parsers, and networking software from scratch as well, but I see those as projects with their own learning goals rather than things to bundle into this one. Hence, I eventually plan to make those separately for my learning (and enjoyment).
+- **C++ Search Engine Core:** The core search engine components (index builder, query processor, retrieval engine, and ranker) are being designed and built from scratch in C++ because it gives me full control over memory and data structures, which are central to the search engine's implementation.
+- **Go Service Layer:** Go is selected for the Search API, web crawler, HTML parser, service coordination, network I/O, and client request routing. Go is well suited for the service layer because the crawler and API are network-heavy components, and Go's concurrency model makes it a natural choice for handling many requests and crawling multiple pages at once.
 
 ---
 
@@ -47,9 +40,9 @@ There are two main pipelines:
 
 The system is split into 3 layers:
 
-- **C++ layer:** Core of the search engine
-- **Node.js layer:** API + orchestration
-- **Storage layer:** Documents + inverted index
+- **C++ Search Engine Core Layer:** Inverted index construction, query normalization/tokenization, candidate document retrieval, and ranking.
+- **Go Service Layer:** Search API, web crawler, HTML parser, service coordination, network I/O, and client request routing.
+- **Storage Layer:** Raw document storage and persistent inverted index storage.
 
 ---
 
