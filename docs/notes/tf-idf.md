@@ -13,3 +13,5 @@ It combines 2 components:
 2. **Inverse Document Frequency (IDF):** Reduces the weight of common words across multiple documents while increasing the weight of rare words. If a term appears in fewer documents, it is more likely to be meaningful and specific.
 
 `IDF(t,D) = log(Total number of documents in corpus D / Number of documents containing term t)`
+
+This balance allows TF-IDF to highlight terms that are both frequent within a specific document and distinctive across the text document, making it a useful tool for tasks like search ranking, text classification and keyword extraction.
