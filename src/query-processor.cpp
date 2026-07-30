@@ -11,15 +11,17 @@
 #include <vector>
 
 // TODO: dummy query/queries to be replaced on the integration for the API layer
-// #define QUERY "Some query related to something educational with %#* () special characters"
 #define QUERY "GNU Debugger"
 
 std::string normalizeQuery(const std::string& rawQuery) {
     std::string normalizedQuery = rawQuery;
 
-    std::transform(normalizedQuery.begin(), normalizedQuery.end(), normalizedQuery.begin(), [](unsigned char c) { return std::tolower(c); });
+    std::transform(normalizedQuery.begin(), normalizedQuery.end(), normalizedQuery.begin(),
+                   [](unsigned char c) { return std::tolower(c); });
 
-    normalizedQuery.erase(std::remove_if(normalizedQuery.begin(), normalizedQuery.end(), [](unsigned char c) { return std::ispunct(c); }), normalizedQuery.end());
+    normalizedQuery.erase(std::remove_if(normalizedQuery.begin(), normalizedQuery.end(),
+                                         [](unsigned char c) { return std::ispunct(c); }),
+                          normalizedQuery.end());
 
     return normalizedQuery;
 }

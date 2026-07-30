@@ -1,6 +1,6 @@
 /*
  * TODO: receive normalized and tokenized queries from the query processor
- * look up postings from the storage layer (will use dummy postings until I finally implement the storage layer)
+ * look up postings from the storage layer
  * generate candidate docs with some lightweight stats for the ranker
  * send it to the ranker
  * */
@@ -20,7 +20,8 @@
 // TODO: dummy query processor to retrieval engine connection
 std::vector<std::string> processedQuery = getProcessedQuery();
 
-// TODO: replace with real inverted index and real data once the storage layer and API layer are implemented
+// TODO: replace with real inverted index and real data once the storage layer
+// and API layer are implemented
 std::vector<std::string> rawContent = readFromDocs("dummy-data");
 std::vector<std::string> normalizedContent = normalizeDocs(rawContent);
 std::vector<std::vector<std::string>> tokenizedContent = tokenizeDocs(normalizedContent);
@@ -81,7 +82,8 @@ int runRetrievalEngine() {
     std::vector<CandidateDocument> cd = generateCandidateDocuments();
 
     for (const auto& c : cd) {
-        std::cout << "docId: " << c.docId << " | matched terms count: " << c.matchedTermsCount << '\n';
+        std::cout << "docId: " << c.docId << " | matched terms count: " << c.matchedTermsCount
+                  << '\n';
     }
 
     return 0;

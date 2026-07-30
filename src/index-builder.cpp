@@ -48,7 +48,8 @@ std::vector<std::string> readFromDocs(const std::string& path) {
 }
 
 void normalizeDoc(std::string& doc) {
-    std::transform(doc.begin(), doc.end(), doc.begin(), [](unsigned char c) { return std::tolower(c); });
+    std::transform(doc.begin(), doc.end(), doc.begin(),
+                   [](unsigned char c) { return std::tolower(c); });
 }
 std::vector<std::string> normalizeDocs(const std::vector<std::string>& rawDocs) {
     std::vector<std::string> normalizedDocs;
@@ -56,7 +57,9 @@ std::vector<std::string> normalizeDocs(const std::vector<std::string>& rawDocs) 
     for (const std::string& doc : rawDocs) {
         std::string normalizedDoc = doc;
 
-        normalizedDoc.erase(std::remove_if(normalizedDoc.begin(), normalizedDoc.end(), [](unsigned char c) { return std::ispunct(c); }), normalizedDoc.end());
+        normalizedDoc.erase(std::remove_if(normalizedDoc.begin(), normalizedDoc.end(),
+                                           [](unsigned char c) { return std::ispunct(c); }),
+                            normalizedDoc.end());
 
         normalizeDoc(normalizedDoc);
         normalizedDocs.push_back(normalizedDoc);
@@ -100,7 +103,8 @@ InvertedIndex buildInvertedIndex(const std::vector<std::vector<std::string>>& pr
     for (int docIdx = 0; docIdx < (int)processedDocs.size(); docIdx++) {
         docId = docIdx + 1;
 
-        std::unordered_map<std::string, TermFreqAndPos> termFreqAndPosMap;  // term -> {termFreq, positions}
+        std::unordered_map<std::string, TermFreqAndPos>
+            termFreqAndPosMap;  // term -> {termFreq, positions}
         int currIdx = 0;
         for (const std::string& term : processedDocs[docIdx]) {
             termFreqAndPosMap[term].termFreq++;
@@ -149,7 +153,8 @@ int runIndexBuilder() {
             std::cout << "docId: " << posting.docId << '\n';
             std::cout << "termFrequency: " << posting.termFrequency << '\n';
             std::cout << "positions:\n";
-            for (const int& pos : posting.positions) std::cout << pos << ", ";  // leaving trailing commas be since I'm just testing
+            for (const int& pos : posting.positions)
+                std::cout << pos << ", ";  // leaving trailing commas be since I'm just testing
             std::cout << '\n';
         }
         std::cout << '\n';

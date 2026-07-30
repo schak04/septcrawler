@@ -14,12 +14,17 @@
 #include "../headers/core-components/retrieval-engine.hpp"
 #include "../headers/data-structures/candidate-doc.hpp"
 
-int calcScore(const CandidateDocument& cd) { return cd.matchedTermsCount; }
+// stupid lil baseline scoring
+// int calcScore(const CandidateDocument& cd) { return cd.matchedTermsCount; }
 
-std::vector<CandidateDocument> rankCandidateDocuments(const std::vector<CandidateDocument>& unrankedCandidateDocs) {
+std::vector<CandidateDocument> rankCandidateDocuments(
+    const std::vector<CandidateDocument>& unrankedCandidateDocs) {
     std::vector<CandidateDocument> rankedCandidateDocs = unrankedCandidateDocs;
 
-    std::sort(rankedCandidateDocs.begin(), rankedCandidateDocs.end(), [](const CandidateDocument& a, const CandidateDocument& b) { return calcScore(a) > calcScore(b); });
+    std::sort(rankedCandidateDocs.begin(), rankedCandidateDocs.end(),
+              [](const CandidateDocument& a, const CandidateDocument& b) {
+                  return calcScore(a) > calcScore(b);
+              });
 
     return rankedCandidateDocs;
 }
@@ -31,7 +36,8 @@ int runRanker() {
     std::vector<CandidateDocument> ranked = rankCandidateDocuments(unranked);
 
     for (const auto& rcd : ranked) {
-        std::cout << "docId: " << rcd.docId << " | matched terms count: " << rcd.matchedTermsCount << '\n';
+        std::cout << "docId: " << rcd.docId << " | matched terms count: " << rcd.matchedTermsCount
+                  << '\n';
     }
 
     return 0;
