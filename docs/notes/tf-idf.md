@@ -14,4 +14,10 @@ It combines 2 components:
 
 `IDF(t,D) = log(Total number of documents in corpus D / Number of documents containing term t)`
 
+> since D is already known to my search engine, I don't need to use it as an IDF param.
+
 This balance allows TF-IDF to highlight terms that are both frequent within a specific document and distinctive across the text document, making it a useful tool for tasks like search ranking, text classification and keyword extraction.
+
+## Combining the two to find the TF-IDF score of a term
+
+`TF-IDF(t,d,D) = TF(t,d) * IDF(t,D)`
