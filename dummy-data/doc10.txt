@@ -1,0 +1,1 @@
+linux vim neovim tmux shell git makefile cmake debugging
