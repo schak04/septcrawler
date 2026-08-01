@@ -1,9 +1,9 @@
 /*
  * NOTE:
- * scoring and ranking implemented using TF-IDF (draft, not completely tested yet)
+ * Scoring and ranking implemented using TF-IDF.
  *
  * TODO:
- * replace dummy data with real data once service and storage layers are implemented
+ * Replace dummy data with real data once service and storage layers are implemented.
  * */
 
 #include "../headers/core-components/ranker.hpp"
@@ -22,20 +22,28 @@
 #include "../headers/data-structures/posting-list.hpp"
 #include "../headers/data-structures/posting.hpp"
 
-// NOTE: scoring algorithm for v1
-
 double calcTFIDFScore(const CandidateDocument& cd) {
+    // NOTE:
+    // Temporary approach for testing.
+    // The index and processed query are rebuilt locally,
+    // and this is obviously not efficient.
+    // Once the storage and service layers are integrated,
+    // these will not be required anymore.
     const std::vector<std::string> query = getProcessedQuery();
     std::vector<std::string> rawContent = readFromDocs("dummy-data");
     std::vector<std::string> normalizedContent = normalizeDocs(rawContent);
     std::vector<std::vector<std::string>> tokenizedContent = tokenizeDocs(normalizedContent);
     InvertedIndex invidx = buildInvertedIndex(tokenizedContent);
+    // ---
 
     double TFIDFScoreForCandidateDoc = 0;
 
     for (const std::string& term : query) {
         // TF
-        Posting posting;
+        // NOTE:
+        // Safe because candidate documents are generated using AND retrieval,
+        // so every candidate contains every query term.
+        Posting posting;  // for (term, cd.docId)
         for (const Posting& p : invidx.index[term].entries) {
             if (p.docId == cd.docId) {
                 posting = p;
@@ -43,25 +51,21 @@ double calcTFIDFScore(const CandidateDocument& cd) {
             }
         }
 
-        int countOfTermInDoc = posting.termFrequency;
-        int totalTermsInDoc = 0;
-        for (const Posting& p : invidx.index[term].entries) {
-            if (p.docId == cd.docId) {
-                totalTermsInDoc += p.termFrequency;
-            }
-        }
+        const double countOfTermInDoc = posting.termFrequency;
+        const double totalTermsInDoc = tokenizedContent[posting.docId - 1].size();
 
-        double TF = countOfTermInDoc / totalTermsInDoc;
+        const double TF = countOfTermInDoc / totalTermsInDoc;
 
         // IDF
-        int numberOfDocumentsInTheCorpus = tokenizedContent.size();
-        int numberOfDocumentsContainingTerm = invidx.index[term].entries.size();
+        const double numberOfDocumentsInTheCorpus = static_cast<double>(tokenizedContent.size());
+        const double numberOfDocumentsContainingTerm =
+            static_cast<double>(invidx.index[term].entries.size());
 
         // for future ref: https://en.cppreference.com/cpp/numeric/math/log
-        double IDF = std::log(numberOfDocumentsInTheCorpus / numberOfDocumentsContainingTerm);
+        const double IDF = std::log(numberOfDocumentsInTheCorpus / numberOfDocumentsContainingTerm);
 
         // TF-IDF
-        double TFIDFScoreForQueryTerm = TF * IDF;
+        const double TFIDFScoreForQueryTerm = TF * IDF;
         TFIDFScoreForCandidateDoc += TFIDFScoreForQueryTerm;
     }
 
@@ -86,9 +90,13 @@ int runRanker() {
     std::vector<CandidateDocument> unranked = generateCandidateDocuments();
     std::vector<CandidateDocument> ranked = rankCandidateDocuments(unranked);
 
+    // NOTE:
+    // calcTFIDFScore() rebuilds the index and processed query on each call.
+    // This is temporary for testing. Once the storage layer is integrated,
+    // scores will be computed from the shared index instead.
     for (const auto& rcd : ranked) {
         std::cout << "docId: " << rcd.docId << " | matched terms count: " << rcd.matchedTermsCount
-                  << '\n';
+                  << " | TF-IDF score: " << calcTFIDFScore(rcd) << '\n';
     }
 
     return 0;
