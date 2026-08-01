@@ -1,6 +1,6 @@
 # SeptCrawler
 
-This project is a search engine for retrieving learning resources (documentation, references, tutorials, and discussion forums). I'm writing the search engine's core from scratch in C++, while the Go Service Layer (Search API, web crawler, HTML parser, and service coordination) is planned to be implemented in Go. The system is designed to crawl and index learning resources, allowing users to search across them through a focused interface without having results polluted by entertainment-related content.
+This project is a search engine for retrieving learning resources (documentation, references, tutorials, and discussion forums). I'm writing the search engine's core from scratch in C++, and the service layer in Go. The system is designed to crawl and index learning resources, allowing users to search across them through a focused interface without having results polluted by entertainment-related content.
 
 > [!IMPORTANT]  
 > **Project Status: In Active Development Phase**  
@@ -26,8 +26,23 @@ Along the way, my goal is to make something that could be useful for learners an
 
 I chose C++ and Go to keep the search engine core separate from the backend service layer.
 
-- **C++ Search Engine Core:** The core search engine components (index builder, query processor, retrieval engine, and ranker) are being designed and built from scratch in C++ because it gives me full control over memory and data structures, which are central to the search engine's implementation.
-- **Go Service Layer:** Go is selected for the Search API, web crawler, HTML parser, service coordination, network I/O, and client request routing. Go is well suited for the service layer because the crawler and API are network-heavy components, and Go's concurrency model makes it a natural choice for handling many requests and crawling multiple pages at once.
+- **C++ Search Engine Core:** Index builder, query processor, retrieval engine, ranker, and data structures built from scratch in C++.
+- **Go Service Layer:** Search API, web crawler, HTML parser, service coordination, network I/O, and client request routing in Go.
+
+> [!NOTE]  
+> _"But Saptaparno! Can you really say the search engine core implementation is truly from scratch if you didn't manually manage memory with raw pointers and used the STL?"_
+>
+> Fair question.
+>
+> If your definition of "from scratch" requires smelting your own silicon, writing a custom allocator, implementing your own containers, and only then declaring a vector... then no. Those are things I want to tackle in separate low-level projects (not smelting silicon though).
+>
+> By "from scratch" I mean building the core system myself rather than plugging in existing search infrastructure like Lucene, Elasticsearch, or SQLite FTS.
+>
+> I studied information retrieval and search engine architecture, designed the architecture and data structures myself, and implemented the indexing, query processing, retrieval, and ranking logic in C++.
+>
+> Besides, manually managing memory doesn't make a search engine more "from scratch".
+>
+> (Also, no, this absolutely isn't me trying to silence my impostor syndrome, I swear.)
 
 ---
 
