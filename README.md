@@ -16,7 +16,7 @@ This project is a search engine for retrieving learning resources (documentation
 ## Goal/Motivation
 
 The goal of this project is for me to understand how traditional search engines work internally by building one from scratch.
-It is intended to strengthen my backend engineering skills + my programming, researching, and system-designing skills as a whole.
+It is intended to strengthen my backend engineering, systems programming, and software design skills, along with my programming, research, and problem-solving abilities as a whole.
 I do not intend this to compete with existing search engines, as this is primarily for my learning of how such systems are designed and implemented.
 Along the way, my goal is to make something that could be useful for learners and developers like myself searching for focused learning resources, while not having their flow-state disrupted.
 
