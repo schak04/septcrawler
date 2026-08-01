@@ -1,1 +1,0 @@
-rust ownership borrowing lifetimes compiler memory safety borrow checker

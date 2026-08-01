@@ -1,1 +1,0 @@
-c cplusplus compiler linker object files executable symbols

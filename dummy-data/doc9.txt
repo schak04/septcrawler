@@ -1,1 +1,0 @@
-search engine indexing inverted index retrieval ranking tf idf query processing
