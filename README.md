@@ -29,21 +29,6 @@ I chose C++ and Go to keep the search engine core separate from the backend serv
 - **C++ Search Engine Core:** Index builder, query processor, retrieval engine, ranker, and data structures built from scratch in C++.
 - **Go Service Layer:** Search API, web crawler, HTML parser, service coordination, network I/O, and client request routing in Go.
 
-> [!NOTE]  
-> _"But Saptaparno! Can you really say the search engine core implementation is truly from scratch if you didn't manually manage memory with raw pointers and used the STL?"_
->
-> Fair question.
->
-> If your definition of "from scratch" requires smelting your own silicon, writing a custom allocator, implementing your own containers, and only then declaring a vector... then no. Those are things I want to tackle in separate low-level projects (not smelting silicon though).
->
-> By "from scratch" I mean building the core system myself rather than plugging in existing search infrastructure like Lucene, Elasticsearch, or SQLite FTS.
->
-> I studied information retrieval and search engine architecture, designed the architecture and data structures myself, and implemented the indexing, query processing, retrieval, and ranking logic in C++.
->
-> Besides, manually managing memory doesn't make a search engine more "from scratch".
->
-> (Also, no, this absolutely isn't me trying to silence my impostor syndrome, I swear.)
-
 ---
 
 ## System Overview
