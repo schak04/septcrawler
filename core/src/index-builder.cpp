@@ -5,7 +5,7 @@
  * write inverted index to disk
  * */
 
-#include "../headers/core-components/index-builder.hpp"
+#include "core-components/index-builder.hpp"
 
 #include <algorithm>
 #include <cctype>
@@ -16,9 +16,9 @@
 #include <string>
 #include <vector>
 
-#include "../headers/data-structures/inverted-index.hpp"
-#include "../headers/data-structures/posting-list.hpp"
-#include "../headers/data-structures/posting.hpp"
+#include "data-structures/inverted-index.hpp"
+#include "data-structures/posting-list.hpp"
+#include "data-structures/posting.hpp"
 
 // for future ref: https://cppreference.com/cpp/filesystem
 // one string in the vector corresponds to one doc's content

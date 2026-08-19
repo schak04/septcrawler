@@ -1,13 +1,13 @@
 CXX = g++
-CXXFLAGS = -std=c++20 -Wall -Wextra
+CXXFLAGS = -std=c++20 -Wall -Wextra -Icore/include
 
-septcrawler: src/main.cpp src/index-builder.cpp src/query-processor.cpp src/retrieval-engine.cpp src/ranker.cpp
+septcrawler: core/src/main.cpp core/src/index-builder.cpp core/src/query-processor.cpp core/src/retrieval-engine.cpp core/src/ranker.cpp
 	$(CXX) $(CXXFLAGS) \
-		src/main.cpp \
-		src/index-builder.cpp \
-		src/query-processor.cpp \
-		src/retrieval-engine.cpp \
-		src/ranker.cpp \
+		core/src/main.cpp \
+		core/src/index-builder.cpp \
+		core/src/query-processor.cpp \
+		core/src/retrieval-engine.cpp \
+		core/src/ranker.cpp \
 		-o bin/septcrawler
 
 clean:

@@ -5,17 +5,17 @@
  * send it to the ranker
  * */
 
-#include "../headers/core-components/retrieval-engine.hpp"
+#include "core-components/retrieval-engine.hpp"
 
 #include <iostream>
 #include <string>
 #include <vector>
 
-#include "../headers/core-components/index-builder.hpp"
-#include "../headers/core-components/query-processor.hpp"
-#include "../headers/data-structures/candidate-doc.hpp"
-#include "../headers/data-structures/inverted-index.hpp"
-#include "../headers/data-structures/posting-list.hpp"
+#include "core-components/index-builder.hpp"
+#include "core-components/query-processor.hpp"
+#include "data-structures/candidate-doc.hpp"
+#include "data-structures/inverted-index.hpp"
+#include "data-structures/posting-list.hpp"
 
 // TODO: dummy query processor to retrieval engine connection
 std::vector<std::string> processedQuery = getProcessedQuery();

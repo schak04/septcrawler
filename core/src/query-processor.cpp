@@ -2,7 +2,7 @@
  * TODO: actual user queries to be used once the API layer is integrated
  * */
 
-#include "../headers/core-components/query-processor.hpp"
+#include "core-components/query-processor.hpp"
 
 #include <algorithm>
 #include <iostream>

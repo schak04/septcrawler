@@ -6,7 +6,7 @@
  * Replace dummy data with real data once service and storage layers are implemented.
  * */
 
-#include "../headers/core-components/ranker.hpp"
+#include "core-components/ranker.hpp"
 
 #include <algorithm>
 #include <cmath>
@@ -14,13 +14,13 @@
 #include <string>
 #include <vector>
 
-#include "../headers/core-components/index-builder.hpp"
-#include "../headers/core-components/query-processor.hpp"
-#include "../headers/core-components/retrieval-engine.hpp"
-#include "../headers/data-structures/candidate-doc.hpp"
-#include "../headers/data-structures/inverted-index.hpp"
-#include "../headers/data-structures/posting-list.hpp"
-#include "../headers/data-structures/posting.hpp"
+#include "core-components/index-builder.hpp"
+#include "core-components/query-processor.hpp"
+#include "core-components/retrieval-engine.hpp"
+#include "data-structures/candidate-doc.hpp"
+#include "data-structures/inverted-index.hpp"
+#include "data-structures/posting-list.hpp"
+#include "data-structures/posting.hpp"
 
 double calcTFIDFScore(const CandidateDocument& cd) {
     // NOTE:
