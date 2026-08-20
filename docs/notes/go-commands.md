@@ -14,7 +14,7 @@
 
 - `go build`: Compile the current package.
 - `go build ./...`: Compile all Go packages in the current module and its subdirectories recursively.
-- `go build ./cmd/api`: Build a specific package/executable.
+- `go build ./cmd/something`: Build a specific package/executable.
 - `go install`: Compile and install a package or executable.
 
 ### Run
