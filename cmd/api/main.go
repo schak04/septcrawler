@@ -1,7 +1,8 @@
 package main
 
-import "fmt"
+import "septcrawler/internal/api"
 
 func main() {
-	fmt.Println("SeptCrawler Search API starting...")
+	server := api.Server{}
+	server.Start()
 }
