@@ -1,10 +1,3 @@
-/*
- * DONE: reading from docs, normalization, tokenization, inverted index construction
- *
- * TODO: read from actual docs passed by the HTML parser to process them and build inverted index
- * write inverted index to disk
- * */
-
 #include "core-components/index-builder.hpp"
 
 #include <algorithm>
@@ -23,8 +16,19 @@
 // for future ref: https://cppreference.com/cpp/filesystem
 // one string in the vector corresponds to one doc's content
 std::vector<std::string> readFromDocs(const std::string& path) {
+    std::string targetPath = path;
+    if (!std::filesystem::exists(targetPath)) {
+        if (std::filesystem::exists("../" + path)) {
+            targetPath = "../" + path;
+        } else if (std::filesystem::exists("../../" + path)) {
+            targetPath = "../../" + path;
+        } else {
+            return {};
+        }
+    }
+
     std::vector<std::string> docsContent;
-    for (const auto& doc : std::filesystem::directory_iterator{path}) {
+    for (const auto& doc : std::filesystem::directory_iterator{targetPath}) {
         std::string fileToRead = doc.path();
         std::ifstream f(fileToRead);
 
@@ -51,6 +55,7 @@ void normalizeDoc(std::string& doc) {
     std::transform(doc.begin(), doc.end(), doc.begin(),
                    [](unsigned char c) { return std::tolower(c); });
 }
+
 std::vector<std::string> normalizeDocs(const std::vector<std::string>& rawDocs) {
     std::vector<std::string> normalizedDocs;
 
@@ -100,7 +105,7 @@ InvertedIndex buildInvertedIndex(const std::vector<std::vector<std::string>>& pr
     InvertedIndex invertedIndex;
 
     int docId;
-    for (int docIdx = 0; docIdx < (int)processedDocs.size(); docIdx++) {
+    for (int docIdx = 0; docIdx < static_cast<int>(processedDocs.size()); docIdx++) {
         docId = docIdx + 1;
 
         std::unordered_map<std::string, TermFreqAndPos>
