@@ -9,6 +9,7 @@
 
 #include <iostream>
 #include <string>
+#include <unordered_map>
 #include <vector>
 
 #include "core-components/index-builder.hpp"
@@ -41,19 +42,30 @@ InvertedIndex invidx = buildInvertedIndex(tokenizedContent);
  */
 
 // posting list(s) lookup
-std::vector<PostingList> lookupPostingLists() {
+std::vector<PostingList> lookupPostingLists(const std::vector<std::string>& queryTokens) {
     std::vector<PostingList> postingListsBasedOnQueryTokens;
-    for (const std::string& queryToken : processedQuery) {
-        postingListsBasedOnQueryTokens.push_back(invidx.index[queryToken]);
+    for (const std::string& queryToken : queryTokens) {
+        auto it = invidx.index.find(queryToken);
+        if (it != invidx.index.end()) {
+            postingListsBasedOnQueryTokens.push_back(it->second);
+        }
     }
 
     return postingListsBasedOnQueryTokens;
 }
 
+std::vector<PostingList> lookupPostingLists() { return lookupPostingLists(processedQuery); }
+
 // candidate docs creation
-std::vector<CandidateDocument> generateCandidateDocuments() {
+std::vector<CandidateDocument> generateCandidateDocuments(
+    const std::vector<std::string>& queryTokens) {
     std::vector<CandidateDocument> candidateDocs;
-    std::vector<PostingList> postingListsToBeIntersected = lookupPostingLists();
+    std::vector<PostingList> postingListsToBeIntersected = lookupPostingLists(queryTokens);
+
+    if (postingListsToBeIntersected.empty() ||
+        postingListsToBeIntersected.size() < queryTokens.size()) {
+        return candidateDocs;
+    }
 
     // counts how many posting lists each doc appears in
     std::unordered_map<int, int> matchedTermsCountMap;  // docId -> matchedTermsCount
@@ -65,7 +77,7 @@ std::vector<CandidateDocument> generateCandidateDocuments() {
     }
 
     for (const auto& entry : matchedTermsCountMap) {
-        if (entry.second == (int)postingListsToBeIntersected.size()) {
+        if (entry.second == static_cast<int>(postingListsToBeIntersected.size())) {
             CandidateDocument candidateDoc;
             candidateDoc.docId = entry.first;
             candidateDoc.matchedTermsCount = entry.second;
@@ -74,6 +86,10 @@ std::vector<CandidateDocument> generateCandidateDocuments() {
     }
 
     return candidateDocs;
+}
+
+std::vector<CandidateDocument> generateCandidateDocuments() {
+    return generateCandidateDocuments(processedQuery);
 }
 
 int runRetrievalEngine() {

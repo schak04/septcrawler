@@ -22,14 +22,13 @@
 #include "data-structures/posting-list.hpp"
 #include "data-structures/posting.hpp"
 
-double calcTFIDFScore(const CandidateDocument& cd) {
+double calcTFIDFScore(const CandidateDocument& cd, const std::vector<std::string>& query) {
     // NOTE:
     // Temporary approach for testing.
     // The index and processed query are rebuilt locally,
     // and this is obviously not efficient.
     // Once the storage and service layers are integrated,
     // these will not be required anymore.
-    const std::vector<std::string> query = getProcessedQuery();
     std::vector<std::string> rawContent = readFromDocs("dummy-data");
     std::vector<std::string> normalizedContent = normalizeDocs(rawContent);
     std::vector<std::vector<std::string>> tokenizedContent = tokenizeDocs(normalizedContent);
@@ -44,44 +43,61 @@ double calcTFIDFScore(const CandidateDocument& cd) {
         // Safe because candidate documents are generated using AND retrieval,
         // so every candidate contains every query term.
         Posting posting;  // for (term, cd.docId)
-        for (const Posting& p : invidx.index[term].entries) {
-            if (p.docId == cd.docId) {
-                posting = p;
-                break;
+        auto it = invidx.index.find(term);
+        if (it != invidx.index.end()) {
+            for (const Posting& p : it->second.entries) {
+                if (p.docId == cd.docId) {
+                    posting = p;
+                    break;
+                }
             }
         }
 
         const double countOfTermInDoc = posting.termFrequency;
-        const double totalTermsInDoc = tokenizedContent[posting.docId - 1].size();
+        const double totalTermsInDoc =
+            static_cast<double>(tokenizedContent[posting.docId - 1].size());
 
-        const double TF = countOfTermInDoc / totalTermsInDoc;
+        const double TF = totalTermsInDoc > 0 ? (countOfTermInDoc / totalTermsInDoc) : 0.0;
 
         // IDF
         const double numberOfDocumentsInTheCorpus = static_cast<double>(tokenizedContent.size());
         const double numberOfDocumentsContainingTerm =
-            static_cast<double>(invidx.index[term].entries.size());
+            (it != invidx.index.end()) ? static_cast<double>(it->second.entries.size()) : 0.0;
 
         // for future ref: https://en.cppreference.com/cpp/numeric/math/log
-        const double IDF = std::log(numberOfDocumentsInTheCorpus / numberOfDocumentsContainingTerm);
+        if (numberOfDocumentsContainingTerm > 0) {
+            const double IDF =
+                std::log(numberOfDocumentsInTheCorpus / numberOfDocumentsContainingTerm);
 
-        // TF-IDF
-        const double TFIDFScoreForQueryTerm = TF * IDF;
-        TFIDFScoreForCandidateDoc += TFIDFScoreForQueryTerm;
+            // TF-IDF
+            const double TFIDFScoreForQueryTerm = TF * IDF;
+            TFIDFScoreForCandidateDoc += TFIDFScoreForQueryTerm;
+        }
     }
 
     return TFIDFScoreForCandidateDoc;
 }
 
+double calcTFIDFScore(const CandidateDocument& cd) {
+    return calcTFIDFScore(cd, getProcessedQuery());
+}
+
 std::vector<CandidateDocument> rankCandidateDocuments(
-    const std::vector<CandidateDocument>& unrankedCandidateDocs) {
+    const std::vector<CandidateDocument>& unrankedCandidateDocs,
+    const std::vector<std::string>& query) {
     std::vector<CandidateDocument> rankedCandidateDocs = unrankedCandidateDocs;
 
     std::sort(rankedCandidateDocs.begin(), rankedCandidateDocs.end(),
-              [](const CandidateDocument& a, const CandidateDocument& b) {
-                  return calcTFIDFScore(a) > calcTFIDFScore(b);
+              [&query](const CandidateDocument& a, const CandidateDocument& b) {
+                  return calcTFIDFScore(a, query) > calcTFIDFScore(b, query);
               });
 
     return rankedCandidateDocs;
+}
+
+std::vector<CandidateDocument> rankCandidateDocuments(
+    const std::vector<CandidateDocument>& unrankedCandidateDocs) {
+    return rankCandidateDocuments(unrankedCandidateDocs, getProcessedQuery());
 }
 
 int runRanker() {
