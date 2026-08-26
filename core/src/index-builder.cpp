@@ -1,3 +1,10 @@
+/*
+ * DONE: reading from docs, normalization, tokenization, inverted index construction
+ *
+ * TODO: read from actual docs passed by the HTML parser to process them and build inverted index
+ * write inverted index to disk
+ * */
+
 #include "core-components/index-builder.hpp"
 
 #include <algorithm>
