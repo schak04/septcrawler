@@ -28,6 +28,7 @@ I chose C++ and Go to keep the search engine core separate from the backend serv
 
 - **C++ Search Engine Core:** Index builder, query processor, retrieval engine, ranker, and data structures built from scratch in C++.
 - **Go Service Layer:** Search API, web crawler, HTML parser, service coordination, network I/O, and client request routing in Go.
+- **Go / C++ Integration:** C-compatible API wrapper with `extern "C"` and cgo for in-process communication between the Go service layer and C++ core.
 
 ---
 
@@ -52,6 +53,7 @@ The system is split into 3 layers:
 2. **Two independent pipelines:** Offline ingestion vs online query processing.
 3. **Index is a database, not a pipeline stage:** It is queried, not passed through.
 4. **Retrieval is the mandatory bridge:** Without retrieval, the ranker cannot operate and the index cannot be used meaningfully.
+5. **In-process C-ABI boundary:** Go calls the C++ core through a thin C-compatible wrapper via cgo, keeping the architecture simple for v1 while isolating language runtimes.
 
 > [!NOTE]  
 > When I say **online**, I mean work performed while handling a live user request, and **offline** refers to work performed independently of any live user request, typically in the background to prepare data for future searches.
@@ -64,6 +66,7 @@ The system is split into 3 layers:
 
 - [High-Level Design](./docs/design-details/hld.md)
 - [Low-Level Design](./docs/design-details/lld.md)
+- [C++ <-> Go Integration](./docs/design-details/cpp-go-integration.md)
 
 ### <ins>Diagrams</ins>
 
