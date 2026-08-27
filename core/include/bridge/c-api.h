@@ -1,5 +1,5 @@
 // C-compatible API exposed to Go via cgo
-// Declarations only; implementation will go in a file called bridge.cpp
+// Declarations only; implementation is in bridge.cpp
 
 #ifndef SEPTCRAWLER_BRIDGE_C_API_H
 #define SEPTCRAWLER_BRIDGE_C_API_H
