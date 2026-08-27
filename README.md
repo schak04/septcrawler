@@ -28,7 +28,9 @@ I chose C++ and Go to keep the search engine core separate from the backend serv
 
 - **C++ Search Engine Core:** Index builder, query processor, retrieval engine, ranker, and data structures built from scratch in C++.
 - **Go Service Layer:** Search API, web crawler, HTML parser, service coordination, network I/O, and client request routing in Go.
-- **Go / C++ Integration:** C-compatible API wrapper with `extern "C"` and cgo for in-process communication between the Go service layer and C++ core.
+- **C++ / Go Integration:** C-compatible API wrapper with `extern "C"` and cgo for in-process communication between the Go service layer and C++ core.
+
+> Basically, Go doesn't directly talk to my C++ classes/functions. cgo lets Go call a C-compatible interface, and bridge.cpp implements that interface by calling my actual C++ search-engine code and converting the results into C-compatible data that Go can consume.
 
 ---
 
