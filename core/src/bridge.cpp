@@ -21,8 +21,7 @@ SearchResponseC search_query(const char* query) {
     }
 
     std::string rawQuery(query);
-    std::string normalizedQuery = normalizeQuery(rawQuery);
-    std::vector<std::string> queryTokens = tokenizeQuery(normalizedQuery);
+    std::vector<std::string> queryTokens = processQuery(rawQuery);
 
     if (queryTokens.empty()) {
         return response;

@@ -1,17 +1,13 @@
 /*
- * TODO: actual user queries to be used once the API layer is integrated
+ * DONE: query normalization and tokenization, dynamic query processing via processQuery()
  * */
 
 #include "core-components/query-processor.hpp"
 
 #include <algorithm>
-#include <iostream>
 #include <sstream>
 #include <string>
 #include <vector>
-
-// TODO: dummy query/queries to be replaced on the integration for the API layer
-#define QUERY "GNU Debugger"
 
 std::string normalizeQuery(const std::string& rawQuery) {
     std::string normalizedQuery = rawQuery;
@@ -38,25 +34,7 @@ std::vector<std::string> tokenizeQuery(const std::string& normalizedQuery) {
     return tokenizedQuery;
 }
 
-// for the retrieval engine
-std::vector<std::string> getProcessedQuery() {
-    std::string normalizedQuery = normalizeQuery(QUERY);
-    std::vector<std::string> tokenizedQuery = tokenizeQuery(normalizedQuery);
-
-    return tokenizedQuery;
-}
-
-int runQueryProcessor() {
-    std::cout << "\nRUNNING QUERY PROCESSOR...\n";
-
-    std::string normalizedQuery = normalizeQuery(QUERY);
-    std::vector<std::string> tokenizedQuery = tokenizeQuery(normalizedQuery);
-
-    std::cout << QUERY << " -> " << normalizedQuery << '\n';
-    std::cout << "Query tokens: " << '\n';
-    for (const std::string& token : tokenizedQuery) {
-        std::cout << token << '\n';
-    }
-
-    return 0;
+std::vector<std::string> processQuery(const std::string& rawQuery) {
+    std::string normalizedQuery = normalizeQuery(rawQuery);
+    return tokenizeQuery(normalizedQuery);
 }

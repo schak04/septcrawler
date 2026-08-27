@@ -5,5 +5,4 @@
 
 std::string normalizeQuery(const std::string& rawQuery);
 std::vector<std::string> tokenizeQuery(const std::string& normalizedQuery);
-std::vector<std::string> getProcessedQuery();
-int runQueryProcessor();
+std::vector<std::string> processQuery(const std::string& rawQuery);
