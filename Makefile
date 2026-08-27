@@ -18,14 +18,10 @@ CORE_OBJS = bin/index-builder.o \
 BRIDGE_OBJS = bin/bridge.o
 
 LIB_CORE = bin/libseptcrawler_core.a
-BIN_CORE = bin/septcrawler
-BIN_API = bin/api
+BIN_APP = bin/septcrawler
+BIN_CLI = bin/septcrawler-cli
 
-all: $(BIN_CORE) $(BIN_API)
-
-$(BIN_CORE): core/src/main.cpp $(CORE_SRCS)
-	@mkdir -p bin
-	$(CXX) $(CXXFLAGS) core/src/main.cpp $(CORE_SRCS) -o $(BIN_CORE)
+all: $(BIN_APP) $(BIN_CLI)
 
 bin/%.o: core/src/%.cpp
 	@mkdir -p bin
@@ -34,14 +30,15 @@ bin/%.o: core/src/%.cpp
 $(LIB_CORE): $(CORE_OBJS) $(BRIDGE_OBJS)
 	$(AR) $(ARFLAGS) $@ $^
 
-$(BIN_API): $(LIB_CORE) cmd/api/main.go internal/api/server.go internal/core/search.go
-	go build -o $(BIN_API) ./cmd/api
+$(BIN_APP): $(LIB_CORE) cmd/api/main.go internal/api/server.go internal/core/search.go
+	go build -o $(BIN_APP) ./cmd/api
+
+$(BIN_CLI): core/src/main.cpp $(LIB_CORE)
+	$(CXX) $(CXXFLAGS) core/src/main.cpp $(LIB_CORE) -o $(BIN_CLI)
 
 lib: $(LIB_CORE)
 
-api: $(BIN_API)
-
-core: $(BIN_CORE)
+cli: $(BIN_CLI)
 
 clean:
 	rm -rf bin
