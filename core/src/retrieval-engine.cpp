@@ -7,7 +7,6 @@
 
 #include "core-components/retrieval-engine.hpp"
 
-#include <iostream>
 #include <string>
 #include <unordered_map>
 #include <vector>
@@ -17,9 +16,6 @@
 #include "data-structures/candidate-doc.hpp"
 #include "data-structures/inverted-index.hpp"
 #include "data-structures/posting-list.hpp"
-
-// TODO: dummy query processor to retrieval engine connection
-std::vector<std::string> processedQuery = getProcessedQuery();
 
 // TODO: replace with real inverted index and real data once the storage layer
 // and API layer are implemented
@@ -54,8 +50,6 @@ std::vector<PostingList> lookupPostingLists(const std::vector<std::string>& quer
     return postingListsBasedOnQueryTokens;
 }
 
-std::vector<PostingList> lookupPostingLists() { return lookupPostingLists(processedQuery); }
-
 // candidate docs creation
 std::vector<CandidateDocument> generateCandidateDocuments(
     const std::vector<std::string>& queryTokens) {
@@ -86,21 +80,4 @@ std::vector<CandidateDocument> generateCandidateDocuments(
     }
 
     return candidateDocs;
-}
-
-std::vector<CandidateDocument> generateCandidateDocuments() {
-    return generateCandidateDocuments(processedQuery);
-}
-
-int runRetrievalEngine() {
-    std::cout << "\nRUNNING RETRIEVAL ENGINE...\n";
-
-    std::vector<CandidateDocument> cd = generateCandidateDocuments();
-
-    for (const auto& c : cd) {
-        std::cout << "docId: " << c.docId << " | matched terms count: " << c.matchedTermsCount
-                  << '\n';
-    }
-
-    return 0;
 }

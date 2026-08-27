@@ -141,36 +141,3 @@ InvertedIndex buildInvertedIndex(const std::vector<std::vector<std::string>>& pr
 }
 
 // TODO: inverted index to be written to disk (storage layer)
-
-int runIndexBuilder() {
-    std::cout << "\nRUNNING INDEX BUILDER...\n";
-
-    std::vector<std::string> rawContent = readFromDocs("dummy-data");
-    std::vector<std::string> normalizedContent = normalizeDocs(rawContent);
-    std::vector<std::vector<std::string>> tokenizedContent = tokenizeDocs(normalizedContent);
-    InvertedIndex invidx = buildInvertedIndex(tokenizedContent);
-
-    // for (const auto& doc : tokenizedContent) {
-    //     for (const auto& token : doc) {
-    //         std::cout << token << ' ';
-    //     }
-    //     std::cout << '\n';
-    // }
-
-    for (const auto& invidxentry : invidx.index) {
-        std::cout << "for term: " << invidxentry.first << '\n';
-        int i = 0;
-        for (const auto& posting : invidxentry.second.entries) {
-            std::cout << "for posting #" << i++ << ": " << '\n';
-            std::cout << "docId: " << posting.docId << '\n';
-            std::cout << "termFrequency: " << posting.termFrequency << '\n';
-            std::cout << "positions:\n";
-            for (const int& pos : posting.positions)
-                std::cout << pos << ", ";  // leaving trailing commas be since I'm just testing
-            std::cout << '\n';
-        }
-        std::cout << '\n';
-    }
-
-    return 0;
-}

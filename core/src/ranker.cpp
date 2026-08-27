@@ -10,7 +10,6 @@
 
 #include <algorithm>
 #include <cmath>
-#include <iostream>
 #include <string>
 #include <vector>
 
@@ -54,8 +53,7 @@ double calcTFIDFScore(const CandidateDocument& cd, const std::vector<std::string
         }
 
         const double countOfTermInDoc = posting.termFrequency;
-        const double totalTermsInDoc =
-            static_cast<double>(tokenizedContent[posting.docId - 1].size());
+        const double totalTermsInDoc = static_cast<double>(tokenizedContent[posting.docId - 1].size());
 
         const double TF = totalTermsInDoc > 0 ? (countOfTermInDoc / totalTermsInDoc) : 0.0;
 
@@ -78,10 +76,6 @@ double calcTFIDFScore(const CandidateDocument& cd, const std::vector<std::string
     return TFIDFScoreForCandidateDoc;
 }
 
-double calcTFIDFScore(const CandidateDocument& cd) {
-    return calcTFIDFScore(cd, getProcessedQuery());
-}
-
 std::vector<CandidateDocument> rankCandidateDocuments(
     const std::vector<CandidateDocument>& unrankedCandidateDocs,
     const std::vector<std::string>& query) {
@@ -93,27 +87,4 @@ std::vector<CandidateDocument> rankCandidateDocuments(
               });
 
     return rankedCandidateDocs;
-}
-
-std::vector<CandidateDocument> rankCandidateDocuments(
-    const std::vector<CandidateDocument>& unrankedCandidateDocs) {
-    return rankCandidateDocuments(unrankedCandidateDocs, getProcessedQuery());
-}
-
-int runRanker() {
-    std::cout << "\nRUNNING RANKER...\n";
-
-    std::vector<CandidateDocument> unranked = generateCandidateDocuments();
-    std::vector<CandidateDocument> ranked = rankCandidateDocuments(unranked);
-
-    // NOTE:
-    // calcTFIDFScore() rebuilds the index and processed query on each call.
-    // This is temporary for testing. Once the storage layer is integrated,
-    // scores will be computed from the shared index instead.
-    for (const auto& rcd : ranked) {
-        std::cout << "docId: " << rcd.docId << " | matched terms count: " << rcd.matchedTermsCount
-                  << " | TF-IDF score: " << calcTFIDFScore(rcd) << '\n';
-    }
-
-    return 0;
 }
