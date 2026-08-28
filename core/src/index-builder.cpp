@@ -17,7 +17,6 @@
 #include <vector>
 
 #include "data-structures/inverted-index.hpp"
-#include "data-structures/posting-list.hpp"
 #include "data-structures/posting.hpp"
 
 // for future ref: https://cppreference.com/cpp/filesystem
