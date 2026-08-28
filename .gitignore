@@ -5,3 +5,6 @@ data
 # rough work
 plans
 docs/notes/drafts/
+
+# more
+compile_commands.json
