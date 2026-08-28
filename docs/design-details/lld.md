@@ -16,6 +16,7 @@ It stores: `term -> documents`. This allows fast lookup.
 
 ```cpp
 class InvertedIndex {
+public:
     unordered_map<string, PostingList> index;
 };
 ```
@@ -28,6 +29,7 @@ A posting list contains all the documents in which a term appears.
 
 ```cpp
 class PostingList {
+public:
     vector<Posting> entries;
     int totalFrequency;
 };
@@ -43,6 +45,7 @@ A posting represents a single entry in a posting list. It stores information abo
 
 ```cpp
 class Posting {
+public:
     int docId;
     int termFrequency;
     vector<int> positions;
