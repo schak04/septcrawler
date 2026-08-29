@@ -1,8 +1,16 @@
 package core
 
 import (
+	"os"
 	"testing"
 )
+
+func init() {
+	if _, err := os.Stat("dummy-data"); os.IsNotExist(err) {
+		_ = os.Chdir("../../")
+	}
+	LoadInvertedIndex(BuildInvertedIndex())
+}
 
 func TestSearch(t *testing.T) {
 	results := Search("GNU Debugger")

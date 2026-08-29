@@ -4,8 +4,24 @@ import (
 	"encoding/json"
 	"net/http"
 	"net/http/httptest" // provides tools for testing HTTP handlers without starting a real HTTP server
+	"os"
 	"testing"
+
+	"septcrawler/internal/core"
+	"septcrawler/internal/storage"
 )
+
+func init() {
+	if _, err := os.Stat("dummy-data"); os.IsNotExist(err) {
+		_ = os.Chdir("../../")
+	}
+	idx, err := storage.ReadInvertedIndex()
+	if err != nil || len(idx) == 0 {
+		_ = storage.StoreInvertedIndex()
+		idx, _ = storage.ReadInvertedIndex()
+	}
+	core.LoadInvertedIndex(idx)
+}
 
 func TestSearchHandler(t *testing.T) {
 	req := httptest.NewRequest("GET", "/search?q=GNU+Debugger", nil)
