@@ -11,18 +11,9 @@
 #include <unordered_map>
 #include <vector>
 
-#include "core-components/index-builder.hpp"
-#include "core-components/query-processor.hpp"
 #include "data-structures/candidate-doc.hpp"
 #include "data-structures/inverted-index.hpp"
 #include "data-structures/posting-list.hpp"
-
-// TODO: replace with real inverted index and real data once the storage layer
-// and API layer are implemented
-std::vector<std::string> rawContent = readFromDocs("dummy-data");
-std::vector<std::string> normalizedContent = normalizeDocs(rawContent);
-std::vector<std::vector<std::string>> tokenizedContent = tokenizeDocs(normalizedContent);
-InvertedIndex invidx = buildInvertedIndex(tokenizedContent);
 
 /*
  * TODO: need to look up each query token/term in the inverted index
@@ -37,12 +28,19 @@ InvertedIndex invidx = buildInvertedIndex(tokenizedContent);
  * -> candidate doc IDs + attached stats -> send to ranker
  */
 
-// posting list(s) lookup
+// g_ = global
+// static gives this file-level state internal linkage
+static InvertedIndex g_invertedIndex;
+
+// public interface for the private file-level state (g_invertedIndex)
+void setInvertedIndex(const InvertedIndex& index) { g_invertedIndex = index; }
+const InvertedIndex& getInvertedIndex() { return g_invertedIndex; }
+
 std::vector<PostingList> lookupPostingLists(const std::vector<std::string>& queryTokens) {
     std::vector<PostingList> postingListsBasedOnQueryTokens;
     for (const std::string& queryToken : queryTokens) {
-        auto it = invidx.index.find(queryToken);
-        if (it != invidx.index.end()) {
+        auto it = g_invertedIndex.index.find(queryToken);
+        if (it != g_invertedIndex.index.end()) {
             postingListsBasedOnQueryTokens.push_back(it->second);
         }
     }
@@ -50,7 +48,6 @@ std::vector<PostingList> lookupPostingLists(const std::vector<std::string>& quer
     return postingListsBasedOnQueryTokens;
 }
 
-// candidate docs creation
 std::vector<CandidateDocument> generateCandidateDocuments(
     const std::vector<std::string>& queryTokens) {
     std::vector<CandidateDocument> candidateDocs;
