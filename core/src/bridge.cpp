@@ -159,4 +159,51 @@ void free_inverted_index(InvertedIndexC index) {
 
     std::free(index.entries);
 }
+
+void load_inverted_index(InvertedIndexC index) {
+    // convert the C-compatible index representation into
+    // the native C++ representation used by the search core
+    InvertedIndex cppIndex;
+
+    if (index.entries == nullptr || index.entryCount == 0) {
+        setInvertedIndex(cppIndex);
+        return;
+    }
+
+    for (size_t i = 0; i < index.entryCount; ++i) {
+        const InvertedIndexEntryC& entryC = index.entries[i];
+        if (entryC.term == nullptr) {
+            continue;
+        }
+
+        std::string term(entryC.term);
+        PostingList pList;
+        pList.totalFrequency = entryC.postingList.totalFrequency;
+
+        if (entryC.postingList.entries != nullptr) {
+            for (size_t j = 0; j < entryC.postingList.entryCount; ++j) {
+                const PostingC& pC = entryC.postingList.entries[j];
+
+                Posting p;  // to reconstruct a native C++ Posting from PostingC
+
+                p.docId = pC.docId;
+                p.termFrequency = pC.termFrequency;
+
+                if (pC.positions != nullptr) {
+                    for (size_t k = 0; k < pC.positionCount; ++k) {
+                        p.positions.push_back(pC.positions[k]);
+                    }
+                }
+                pList.entries.push_back(p);
+            }
+        }
+
+        // store the reconstructed posting list under its term
+        cppIndex.index[term] = pList;
+    }
+
+    // transfer the reconstructed index into the search core's
+    // process-local in-memory index
+    setInvertedIndex(cppIndex);
+}
 }

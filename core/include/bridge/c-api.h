@@ -48,6 +48,7 @@ void free_search_response(SearchResponseC response);
 
 InvertedIndexC build_inverted_index(void);
 void free_inverted_index(InvertedIndexC index);
+void load_inverted_index(InvertedIndexC index);
 
 #ifdef __cplusplus
 }
