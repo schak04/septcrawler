@@ -34,8 +34,8 @@ $(LIB_CORE): $(CORE_OBJS) $(BRIDGE_OBJS)
 $(BIN_APP): $(LIB_CORE) cmd/api/main.go internal/api/server.go internal/core/search.go internal/core/index.go
 	go build -o $(BIN_APP) ./cmd/api
 
-$(BIN_CLI): core/src/main.cpp $(LIB_CORE)
-	$(CXX) $(CXXFLAGS) core/src/main.cpp $(LIB_CORE) -o $(BIN_CLI)
+$(BIN_CLI): cmd/cli/main.go internal/core/search.go internal/core/index.go internal/storage/index_store.go
+	go build -o $(BIN_CLI) ./cmd/cli
 
 $(BIN_STORAGE): $(LIB_CORE) cmd/storage/main.go internal/storage/document_store.go internal/storage/index_store.go internal/core/index.go
 	go build -o $(BIN_STORAGE) ./cmd/storage
