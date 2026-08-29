@@ -56,6 +56,7 @@ The system is split into 3 layers:
 3. **Index is a database, not a pipeline stage:** It is queried, not passed through.
 4. **Retrieval is the mandatory bridge:** Without retrieval, the ranker cannot operate and the index cannot be used meaningfully.
 5. **In-process C-ABI boundary:** Go calls the C++ core through a thin C-compatible wrapper via cgo, keeping the architecture simple for v1 while isolating language runtimes.
+6. **Go owns persistent index storage:** The Go storage layer owns filesystem persistence and reading of `data/index/inverted_index.json`. The C++ core receives the persisted index via the C-compatible bridge rather than accessing the JSON file directly, keeping storage/persistence responsibilities isolated from the search engine core.
 
 > [!NOTE]  
 > When I say **online**, I mean work performed while handling a live user request, and **offline** refers to work performed independently of any live user request, typically in the background to prepare data for future searches.

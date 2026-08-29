@@ -26,6 +26,7 @@ The C-compatible API is the only interface Go uses to access the C++ core. C++ i
 - **C++ side:** `QueryProcessor`, `RetrievalEngine`, `Ranker`, `InvertedIndex`, `CandidateDocument`, STL types, and templates remain internal.
 - **C-compatible API:** simple C-compatible functions and types such as integers, character pointers, and plain structs. The functions are implemented in C++ and exposed with `extern "C"` linkage.
 - **Go side:** a thin adapter converts between Go types and the types exposed by the C-compatible API.
+- **Persistent Index Transfer:** The Go storage layer owns filesystem I/O and reads `data/index/inverted_index.json`. It passes the deserialized index across the boundary via `load_inverted_index(InvertedIndexC)`, populating the C++ core in memory without C++ directly accessing disk JSON.
 
 The wrapper provides an insulation layer between Go and the C++ implementation. As long as the C-compatible API remains unchanged, internal C++ implementation changes do not require changes to the Go code.
 
@@ -59,8 +60,8 @@ The wrapper provides an insulation layer between Go and the C++ implementation. 
    |
    | 3. Converts `const char*` to `std::string`.
    | 4. QueryProcessor: `normalizeQuery` -> `tokenizeQuery`.
-   | 5. RetrievalEngine: `generateCandidateDocuments(queryTokens)` intersects posting lists.
-   | 6. Ranker: `rankCandidateDocuments(candidateDocs, queryTokens)` sorts by TF-IDF.
+   | 5. RetrievalEngine: `generateCandidateDocuments(queryTokens)` intersects posting lists using loaded InvertedIndex.
+   | 6. Ranker: `rankCandidateDocuments(candidateDocs, queryTokens)` computes TF-IDF scores from loaded InvertedIndex.
    | 7. Allocates C struct array with `std::malloc(sizeof(CandidateDocumentC) * count)`.
    | 8. Returns `SearchResponseC{documents, count}` back across the boundary.
    v

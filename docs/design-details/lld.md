@@ -210,7 +210,10 @@ This separation simplifies responsibilities and prevents the query pipeline from
 
 ## Persistent Inverted Index
 
-The inverted index is written to persistent storage after construction and loaded by the search engine during query execution.  
-This avoids rebuilding the index every time the application starts and enables efficient repeated searches.
+The inverted index is written to persistent storage (`data/index/inverted_index.json`) by the Go storage layer after construction and loaded into the C++ search engine core via the C-compatible/cgo boundary during startup / query execution.
+
+- The C++ core does not directly access the persistent JSON file on disk.
+- The Go Persistent Inverted Index Store owns filesystem persistence and reading.
+- C++ receives the persisted index through the existing C-compatible/cgo boundary.
 
 ---
