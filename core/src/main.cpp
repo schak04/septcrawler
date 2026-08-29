@@ -14,6 +14,7 @@ Author: Saptaparno Chakraborty
 int main(int argc, char* argv[]) {
     if (argc < 2) {
         std::cout << "Usage: ./bin/septcrawler-cli <query>\n";
+        std::cout << "Enclose the query within \"\" if it has whitespaces in between.\n";
         return 1;
     }
 
