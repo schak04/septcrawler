@@ -1,6 +1,11 @@
 /*
 SeptCrawler: A search engine for learning-focused retrieval.
 Author: Saptaparno Chakraborty
+
+NOTE:
+This isn't used for septcrawler-cli anymore.
+Since reading the persistent inverted index is the Go layer's job now,
+The septcrawler-cli is written in cmd/cli/main.go
 */
 
 #include <iostream>
