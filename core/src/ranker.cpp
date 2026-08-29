@@ -1,9 +1,6 @@
 /*
- * NOTE:
- * Scoring and ranking implemented using TF-IDF.
- *
  * TODO:
- * Replace dummy data with real data once service and storage layers are implemented.
+ * Replace dummy data with real data once the crawler and parser are implemented.
  * */
 
 #include "core-components/ranker.hpp"
@@ -11,10 +8,10 @@
 #include <algorithm>
 #include <cmath>
 #include <string>
+#include <unordered_map>
+#include <unordered_set>
 #include <vector>
 
-#include "core-components/index-builder.hpp"
-#include "core-components/query-processor.hpp"
 #include "core-components/retrieval-engine.hpp"
 #include "data-structures/candidate-doc.hpp"
 #include "data-structures/inverted-index.hpp"
@@ -22,17 +19,17 @@
 #include "data-structures/posting.hpp"
 
 double calcTFIDFScore(const CandidateDocument& cd, const std::vector<std::string>& query) {
-    // NOTE:
-    // Temporary approach for testing.
-    // The index and processed query are rebuilt locally,
-    // and this is obviously not efficient.
-    // Once the storage and service layers are integrated,
-    // these will not be required anymore.
-    std::vector<std::string> rawContent = readFromDocs("dummy-data");
-    std::vector<std::string> normalizedContent = normalizeDocs(rawContent);
-    std::vector<std::vector<std::string>> tokenizedContent = tokenizeDocs(normalizedContent);
-    InvertedIndex invidx = buildInvertedIndex(tokenizedContent);
-    // ---
+    const InvertedIndex& invidx = getInvertedIndex();
+
+    std::unordered_map<int, double> docLengths;  // docId -> total number of terms in that document
+    std::unordered_set<int> distinctDocs;
+
+    for (const auto& pair : invidx.index) {
+        for (const auto& p : pair.second.entries) {
+            docLengths[p.docId] += p.termFrequency;
+            distinctDocs.insert(p.docId);
+        }
+    }
 
     double TFIDFScoreForCandidateDoc = 0;
 
@@ -53,17 +50,17 @@ double calcTFIDFScore(const CandidateDocument& cd, const std::vector<std::string
         }
 
         const double countOfTermInDoc = posting.termFrequency;
-        const double totalTermsInDoc = static_cast<double>(tokenizedContent[posting.docId - 1].size());
+        const double totalTermsInDoc = docLengths[cd.docId];
 
         const double TF = totalTermsInDoc > 0 ? (countOfTermInDoc / totalTermsInDoc) : 0.0;
 
         // IDF
-        const double numberOfDocumentsInTheCorpus = static_cast<double>(tokenizedContent.size());
+        const double numberOfDocumentsInTheCorpus = static_cast<double>(distinctDocs.size());
         const double numberOfDocumentsContainingTerm =
             (it != invidx.index.end()) ? static_cast<double>(it->second.entries.size()) : 0.0;
 
         // for future ref: https://en.cppreference.com/cpp/numeric/math/log
-        if (numberOfDocumentsContainingTerm > 0) {
+        if (numberOfDocumentsContainingTerm > 0 && numberOfDocumentsInTheCorpus > 0) {
             const double IDF =
                 std::log(numberOfDocumentsInTheCorpus / numberOfDocumentsContainingTerm);
 
