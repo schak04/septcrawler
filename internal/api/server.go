@@ -7,6 +7,7 @@ import (
 	"net/http"
 
 	"septcrawler/internal/core"
+	"septcrawler/internal/storage"
 )
 
 const port = ":8080"
@@ -44,6 +45,14 @@ func (server *Server) RegisterRoutes() {
 
 func (server *Server) Start() {
 	server.RegisterRoutes()
+
+	idx, err := storage.ReadInvertedIndex()
+	if err != nil {
+		fmt.Println("Warning: Could not read persistent inverted index:", err)
+	} else {
+		core.LoadInvertedIndex(idx)
+		fmt.Println("Loaded persistent inverted index into search core.")
+	}
 
 	fmt.Println("Server listening on port", port)
 	log.Fatal(http.ListenAndServe(port, nil))
