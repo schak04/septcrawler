@@ -1,8 +1,3 @@
-/*
- * TODO:
- * Replace dummy data with real data once the crawler and parser are implemented.
- * */
-
 #include "core-components/ranker.hpp"
 
 #include <algorithm>

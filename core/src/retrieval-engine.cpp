@@ -1,10 +1,3 @@
-/*
- * TODO: receive normalized and tokenized queries from the query processor
- * look up postings from the storage layer
- * generate candidate docs with some lightweight stats for the ranker
- * send it to the ranker
- * */
-
 #include "core-components/retrieval-engine.hpp"
 
 #include <string>
@@ -14,19 +7,6 @@
 #include "data-structures/candidate-doc.hpp"
 #include "data-structures/inverted-index.hpp"
 #include "data-structures/posting-list.hpp"
-
-/*
- * TODO: need to look up each query token/term in the inverted index
- * AND query -> find docs present in all posting lists
- * OR query -> find docs present in any of the posting lists
- * DECISION (v1): I'll use AND query semantics.
- * Result -> Candidate Documents
- *
- * NOTE:
- * processed query -> look up posting list for each term
- * -> combine posting lists according to query semantics
- * -> candidate doc IDs + attached stats -> send to ranker
- */
 
 // g_ = global
 // static gives this file-level state internal linkage

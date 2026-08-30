@@ -1,7 +1,3 @@
-/*
- * DONE: query normalization and tokenization, dynamic query processing via processQuery()
- * */
-
 #include "core-components/query-processor.hpp"
 
 #include <algorithm>
