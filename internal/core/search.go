@@ -16,20 +16,21 @@ type CandidateDocument struct {
 	MatchedTermsCount int `json:"matchedTermsCount"`
 }
 
+// NOTE: C allocates memory for the query and search response.
+// The Go wrapper is responsible for freeing C-owned memory.
+// (since Go's GC can't manage C-allocated memory)
 func Search(query string) []CandidateDocument {
-	// Allocate C-string in C heap; must be freed manually
 	cQuery := C.CString(query)
 	defer C.free(unsafe.Pointer(cQuery))
 
 	cResponse := C.search_query(cQuery)
-	// Free C-side allocated array after converting results to Go structs
+
 	defer C.free_search_response(cResponse)
 
 	if cResponse.count <= 0 || cResponse.documents == nil {
 		return []CandidateDocument{}
 	}
 
-	// unsafe.Slice constructs a Go slice backed by C memory without extra allocation
 	cDocs := unsafe.Slice(cResponse.documents, int(cResponse.count))
 	results := make([]CandidateDocument, int(cResponse.count))
 
