@@ -5,7 +5,10 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"net/url"
 	"strings"
+
+	"golang.org/x/net/html"
 )
 
 type Fetcher interface {
@@ -14,33 +17,84 @@ type Fetcher interface {
 
 type HTTPFetcher struct{}
 
-func ExtractLinks(page io.Reader) ([]string, error) {
-	// this is just so my LSP doesn't throw errors at my face while I'm yet to write the function
-	return []string{}, nil
+// extracts URLs from <a href="..."> elements
+// baseURL needed since links extracted from a page can be relative
+func ExtractLinks(page io.Reader, baseURL string) ([]string, error) {
+	doc, err := html.Parse(page) // https://pkg.go.dev/golang.org/x/net/html
+	if err != nil {
+		return nil, err
+	}
+
+	parsedBaseURL, err := url.Parse(baseURL) // https://pkg.go.dev/net/url
+	if err != nil {
+		return nil, err
+	}
+
+	var urlsFound []string
+
+	// recursively traverse the HTML's node (since HTML is represented as a tree)
+	// https://pkg.go.dev/golang.org/x/net/html#Node
+	var traverseHTML func(*html.Node)
+
+	traverseHTML = func(node *html.Node) {
+		if node.Type == html.ElementNode && node.Data == "a" {
+			for _, attr := range node.Attr {
+				if attr.Key != "href" {
+					continue
+				}
+
+				refURLfromHrefAttribute, err := url.Parse(attr.Val)
+				if err != nil {
+					continue
+				}
+
+				// since href can be relative, resolve it against the page url
+				resolvedURL := parsedBaseURL.ResolveReference(refURLfromHrefAttribute)
+
+				if resolvedURL.Scheme == "http" || resolvedURL.Scheme == "https" {
+					urlsFound = append(urlsFound, resolvedURL.String())
+				}
+			}
+		}
+
+		for child := node.FirstChild; child != nil; child = child.NextSibling {
+			traverseHTML(child)
+		}
+	}
+
+	traverseHTML(doc)
+
+	return urlsFound, nil
 }
 
 // URL -> page body + a slice of URLs found on that page
 func (httpFetcher HTTPFetcher) Fetch(url string) (string, []string, error) {
-	res, err := http.Get(url)
+	res, err := http.Get(url) // https://pkg.go.dev/net/http
 	if err != nil {
-		return "", []string{}, err
+		return "", nil, err
 	}
 	defer res.Body.Close()
 
-	if res.StatusCode >= 400 && res.StatusCode < 600 {
-		errorMsg := fmt.Sprintf("Error occurred: %v", res.StatusCode)
-		return "", []string{}, errors.New(errorMsg)
+	if res.StatusCode < 200 || res.StatusCode >= 300 {
+		errorMsg := fmt.Sprintf("HTTP request failed with status: %s", res.Status)
+		return "", nil, errors.New(errorMsg)
 	}
 
-	byteSliceBody, err := io.ReadAll(res.Body)
+	// only process HTML for now
+	contentType := res.Header.Get("Content-Type")
+	if !strings.HasPrefix(contentType, "text/html") {
+		return "", nil, errors.New("Response is not HTML")
+	}
+
+	byteSliceBody, err := io.ReadAll(res.Body) // https://pkg.go.dev/io
 	if err != nil {
-		return "", []string{}, err
+		return "", nil, err
 	}
 	body := string(byteSliceBody)
 
-	urlsFound, err := ExtractLinks(strings.NewReader(body)) // https://pkg.go.dev/strings#NewReader
+	urlsFound, err := ExtractLinks(strings.NewReader(body), url) // https://pkg.go.dev/strings#NewReader
 	if err != nil {
-		return body, []string{}, err
+		return body, nil, err
 	}
 
 	return body, urlsFound, nil
@@ -64,6 +118,7 @@ func Crawl(url string, depth int, fetcher Fetcher) {
 		fmt.Println(err)
 		return
 	}
+
 	fmt.Println("Found:")
 	fmt.Println("URL:", url)
 	fmt.Println("Body:", body)
