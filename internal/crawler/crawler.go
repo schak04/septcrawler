@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"net/url"
 	"strings"
+	"sync"
 
 	"golang.org/x/net/html"
 )
@@ -101,6 +102,7 @@ func (httpFetcher HTTPFetcher) Fetch(url string) (string, []string, error) {
 }
 
 var urlVisitedMap = make(map[string]bool) // url -> fetched already or not
+var wg sync.WaitGroup
 
 func Crawl(url string, depth int, fetcher Fetcher) {
 	// TODO: just fetch urls and recursively crawl first
@@ -129,6 +131,22 @@ func Crawl(url string, depth int, fetcher Fetcher) {
 	fmt.Println("Body:", body)
 
 	for _, u := range urls {
-		Crawl(u, depth-1, fetcher)
+		wg.Add(1)
+
+		go func() {
+			defer wg.Done()
+			Crawl(u, depth-1, fetcher)
+		}()
 	}
+}
+
+func StartCrawling(url string, depth int, fetcher Fetcher) {
+	wg.Add(1)
+
+	go func() {
+		defer wg.Done()
+		Crawl(url, depth, fetcher)
+	}()
+
+	wg.Wait()
 }

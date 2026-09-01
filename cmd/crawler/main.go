@@ -10,5 +10,5 @@ var targetURLs []string = []string{"https://en.cppreference.com"}
 
 func main() {
 	var httpFetcher crawler.HTTPFetcher
-	crawler.Crawl(targetURLs[0], 5, httpFetcher)
+	crawler.StartCrawling(targetURLs[0], 5, httpFetcher)
 }
