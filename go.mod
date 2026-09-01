@@ -2,4 +2,4 @@ module septcrawler
 
 go 1.26.5
 
-require golang.org/x/net v0.58.0 // indirect
+require golang.org/x/net v0.58.0 // direct
