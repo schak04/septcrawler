@@ -100,6 +100,8 @@ func (httpFetcher HTTPFetcher) Fetch(url string) (string, []string, error) {
 	return body, urlsFound, nil
 }
 
+var urlVisitedMap = make(map[string]bool) // url -> fetched already or not
+
 func Crawl(url string, depth int, fetcher Fetcher) {
 	// TODO: just fetch urls and recursively crawl first
 	// no need to worry about doing so in parallel yet
@@ -113,10 +115,13 @@ func Crawl(url string, depth int, fetcher Fetcher) {
 	var urls []string
 	var err error
 
-	body, urls, err = fetcher.Fetch(url)
-	if err != nil {
-		fmt.Println(err)
-		return
+	if _, present := urlVisitedMap[url]; !present {
+		body, urls, err = fetcher.Fetch(url)
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+		urlVisitedMap[url] = true
 	}
 
 	fmt.Println("Found:")
