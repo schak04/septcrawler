@@ -105,6 +105,13 @@ var urlVisitedMap = make(map[string]bool) // url -> fetched already or not
 var wg sync.WaitGroup
 var mu sync.Mutex
 
+type CrawledPage struct {
+	URL  string
+	HTML string
+}
+
+var CrawledPages = make([]CrawledPage, 0)
+
 func Crawl(url string, depth int, fetcher Fetcher) {
 	if depth <= 0 {
 		return
@@ -129,9 +136,9 @@ func Crawl(url string, depth int, fetcher Fetcher) {
 		return
 	}
 
-	fmt.Println("Found:")
-	fmt.Println("URL:", url)
-	fmt.Println("Body:", body)
+	mu.Lock()
+	CrawledPages = append(CrawledPages, CrawledPage{URL: url, HTML: body})
+	mu.Unlock()
 
 	for _, u := range urls {
 		wg.Add(1)
