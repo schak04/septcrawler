@@ -4,11 +4,14 @@ import (
 	"fmt"
 	"log"
 
+	"septcrawler/internal/parser"
 	"septcrawler/internal/storage"
 )
 
 func main() {
-	if err := storage.StoreData(); err != nil {
+	parsedDocuments := parser.GetParsedDocuments()
+
+	if err := storage.StoreDocuments(parsedDocuments); err != nil {
 		log.Fatal(err)
 	}
 	fmt.Println("Documents stored successfully.")

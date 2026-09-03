@@ -5,46 +5,39 @@ import (
 	"os"
 	"path/filepath"
 	"testing"
+
+	"septcrawler/internal/parser"
 )
 
-func init() {
-	if _, err := os.Stat("dummy-data"); os.IsNotExist(err) {
-		_ = os.Chdir("../../")
-	}
-}
-
-func TestStoreData(t *testing.T) {
-	if err := StoreData(); err != nil {
-		t.Fatalf("StoreData failed: %v", err)
+func TestStoreDocuments(t *testing.T) {
+	documents := []parser.ParsedDocument{
+		{
+			URL:     "https://example.com",
+			Content: "Example content",
+		},
 	}
 
-	doc1Path := filepath.Join(destination, "doc1.json")
-	content, err := os.ReadFile(doc1Path)
+	if err := StoreDocuments(documents); err != nil {
+		t.Fatalf("StoreDocuments failed: %v", err)
+	}
+
+	docPath := filepath.Join(destination, "doc1.json")
+
+	content, err := os.ReadFile(docPath)
 	if err != nil {
-		t.Fatalf("failed to read stored doc1.json: %v", err)
+		t.Fatalf("failed to read stored document: %v", err)
 	}
 
 	var doc Document
 	if err := json.Unmarshal(content, &doc); err != nil {
-		t.Fatalf("failed to unmarshal doc1.json: %v", err)
+		t.Fatalf("failed to unmarshal document: %v", err)
 	}
 
-	if doc.DocId != 1 {
-		t.Errorf("expected docId 1, got %d", doc.DocId)
+	if doc.URL != "https://example.com" {
+		t.Errorf("expected URL https://example.com, got %s", doc.URL)
 	}
 
-	if len(doc.Content) == 0 {
-		t.Errorf("expected non-empty content for doc1")
-	}
-}
-
-func TestReadData(t *testing.T) {
-	data, err := ReadData(filepath.Join(source, "doc1.txt"))
-	if err != nil {
-		t.Fatalf("ReadData failed: %v", err)
-	}
-
-	if len(data) == 0 {
-		t.Errorf("expected non-empty data from ReadData")
+	if doc.Content != "Example content" {
+		t.Errorf("expected content %q, got %q", "Example content", doc.Content)
 	}
 }
