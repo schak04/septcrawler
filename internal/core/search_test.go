@@ -9,7 +9,12 @@ func init() {
 	if _, err := os.Stat("dummy-data"); os.IsNotExist(err) {
 		_ = os.Chdir("../../")
 	}
-	LoadInvertedIndex(BuildInvertedIndex())
+	sampleDocs := []string{
+		"cmake is a build system.",
+		"GNU Debugger gdb is used for debugging.",
+		"GNU Debugger is powerful.",
+	}
+	LoadInvertedIndex(BuildInvertedIndex(sampleDocs))
 }
 
 func TestSearch(t *testing.T) {

@@ -15,9 +15,14 @@ func init() {
 	if _, err := os.Stat("dummy-data"); os.IsNotExist(err) {
 		_ = os.Chdir("../../")
 	}
+	sampleDocs := []string{
+		"cmake is a build system.",
+		"GNU Debugger gdb is used for debugging.",
+		"GNU Debugger is powerful.",
+	}
 	idx, err := storage.ReadInvertedIndex()
 	if err != nil || len(idx) == 0 {
-		_ = storage.StoreInvertedIndex()
+		_ = storage.StoreInvertedIndex(sampleDocs)
 		idx, _ = storage.ReadInvertedIndex()
 	}
 	core.LoadInvertedIndex(idx)

@@ -11,8 +11,8 @@ import (
 const indexDestination string = "data/index/"
 const indexFilename string = "inverted_index.json"
 
-func StoreInvertedIndex() error {
-	idx := core.BuildInvertedIndex()
+func StoreInvertedIndex(docContents []string) error {
+	idx := core.BuildInvertedIndex(docContents)
 
 	if err := os.MkdirAll(indexDestination, 0755); err != nil {
 		return err

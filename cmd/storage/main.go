@@ -16,7 +16,12 @@ func main() {
 	}
 	fmt.Println("Documents stored successfully.")
 
-	if err := storage.StoreInvertedIndex(); err != nil {
+	docContents := make([]string, len(parsedDocuments))
+	for i, doc := range parsedDocuments {
+		docContents[i] = doc.Content
+	}
+
+	if err := storage.StoreInvertedIndex(docContents); err != nil {
 		log.Fatal(err)
 	}
 	fmt.Println("Inverted index stored successfully.")

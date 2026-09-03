@@ -5,7 +5,11 @@ import (
 )
 
 func TestBuildInvertedIndex(t *testing.T) {
-	idx := BuildInvertedIndex()
+	sampleDocs := []string{
+		"GNU Debugger is a tool for debugging software.",
+		"CMake is a build tool.",
+	}
+	idx := BuildInvertedIndex(sampleDocs)
 
 	if len(idx) == 0 {
 		t.Fatal("expected non-empty inverted index")

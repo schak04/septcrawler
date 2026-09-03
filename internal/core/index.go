@@ -24,8 +24,18 @@ type PostingList struct {
 
 type InvertedIndex map[string]PostingList
 
-func BuildInvertedIndex() InvertedIndex {
-	cIndex := C.build_inverted_index()
+func BuildInvertedIndex(docs []string) InvertedIndex {
+	if len(docs) == 0 {
+		return InvertedIndex{}
+	}
+
+	cDocs := make([]*C.char, len(docs))
+	for i, doc := range docs {
+		cDocs[i] = C.CString(doc)
+		defer C.free(unsafe.Pointer(cDocs[i]))
+	}
+
+	cIndex := C.build_inverted_index((**C.char)(unsafe.Pointer(&cDocs[0])), C.size_t(len(docs)))
 	defer C.free_inverted_index(cIndex)
 
 	if cIndex.entryCount == 0 || cIndex.entries == nil {

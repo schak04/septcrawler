@@ -7,7 +7,11 @@ import (
 )
 
 func TestStoreAndReadInvertedIndex(t *testing.T) {
-	if err := StoreInvertedIndex(); err != nil {
+	sampleDocs := []string{
+		"cmake is a build system.",
+		"GNU Debugger gdb is used for debugging.",
+	}
+	if err := StoreInvertedIndex(sampleDocs); err != nil {
 		t.Fatalf("StoreInvertedIndex failed: %v", err)
 	}
 

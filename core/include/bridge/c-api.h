@@ -46,7 +46,7 @@ typedef struct {
 SearchResponseC search_query(const char* query);
 void free_search_response(SearchResponseC response);
 
-InvertedIndexC build_inverted_index(void);
+InvertedIndexC build_inverted_index(const char** docs, size_t count);
 void free_inverted_index(InvertedIndexC index);
 void load_inverted_index(InvertedIndexC index);
 

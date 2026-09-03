@@ -63,12 +63,24 @@ void free_search_response(SearchResponseC response) {
     }
 }
 
-InvertedIndexC build_inverted_index(void) {
+InvertedIndexC build_inverted_index(const char** docs, size_t count) {
     InvertedIndexC result;
     result.entries = nullptr;
     result.entryCount = 0;
 
-    std::vector<std::string> rawContent = readFromDocs("dummy-data");
+    if (docs == nullptr || count == 0) {
+        return result;
+    }
+
+    std::vector<std::string> rawContent;
+    rawContent.reserve(count);
+    for (size_t i = 0; i < count; ++i) {
+        if (docs[i] != nullptr) {
+            rawContent.push_back(std::string(docs[i]));
+        } else {
+            rawContent.push_back("");
+        }
+    }
     if (rawContent.empty()) {
         return result;
     }
