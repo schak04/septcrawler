@@ -41,3 +41,27 @@ func TestStoreDocuments(t *testing.T) {
 		t.Errorf("expected content %q, got %q", "Example content", doc.Content)
 	}
 }
+
+func TestReadDocuments(t *testing.T) {
+	parsedDocs := []parser.ParsedDocument{
+		{URL: "https://example.com/1", Content: "Doc 1 content"},
+		{URL: "https://example.com/2", Content: "Doc 2 content"},
+	}
+
+	if err := StoreDocuments(parsedDocs); err != nil {
+		t.Fatalf("StoreDocuments failed: %v", err)
+	}
+
+	docs, err := ReadDocuments()
+	if err != nil {
+		t.Fatalf("ReadDocuments failed: %v", err)
+	}
+
+	if len(docs) < 2 {
+		t.Fatalf("expected at least 2 documents read, got %d", len(docs))
+	}
+
+	if docs[0].URL != "https://example.com/1" || docs[1].URL != "https://example.com/2" {
+		t.Errorf("unexpected read documents URLs: %v, %v", docs[0].URL, docs[1].URL)
+	}
+}

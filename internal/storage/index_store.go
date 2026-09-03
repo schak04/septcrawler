@@ -12,6 +12,17 @@ const indexDestination string = "data/index/"
 const indexFilename string = "inverted_index.json"
 
 func StoreInvertedIndex(docContents []string) error {
+	if len(docContents) == 0 {
+		docs, err := ReadDocuments()
+		if err != nil {
+			return err
+		}
+		docContents = make([]string, len(docs))
+		for i, doc := range docs {
+			docContents[i] = doc.Content
+		}
+	}
+
 	idx := core.BuildInvertedIndex(docContents)
 
 	if err := os.MkdirAll(indexDestination, 0755); err != nil {
