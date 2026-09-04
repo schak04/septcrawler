@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"net/http"
 	"net/http/httptest" // provides tools for testing HTTP handlers without starting a real HTTP server
-	"os"
 	"testing"
 
 	"septcrawler/internal/core"
@@ -12,9 +11,6 @@ import (
 )
 
 func init() {
-	if _, err := os.Stat("dummy-data"); os.IsNotExist(err) {
-		_ = os.Chdir("../../")
-	}
 	sampleDocs := []string{
 		"cmake is a build system.",
 		"GNU Debugger gdb is used for debugging.",

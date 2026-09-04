@@ -1,14 +1,10 @@
 package core
 
 import (
-	"os"
 	"testing"
 )
 
 func init() {
-	if _, err := os.Stat("dummy-data"); os.IsNotExist(err) {
-		_ = os.Chdir("../../")
-	}
 	sampleDocs := []string{
 		"cmake is a build system.",
 		"GNU Debugger gdb is used for debugging.",
