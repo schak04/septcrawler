@@ -1,15 +1,16 @@
 # SeptCrawler
 
-This project is a search engine for retrieving learning resources (documentation, references, tutorials, and discussion forums). I'm writing the search engine's core from scratch in C++, and the service layer in Go. The system is designed to crawl and index learning resources, allowing users to search across them through a focused interface without having results polluted by entertainment-related content.
+This project is a search engine for retrieving learning resources (documentation, references, tutorials, and discussion forums). I have written the search engine core from scratch in C++, and the service layer in Go. The system is designed to crawl and index learning resources, allowing users to search across them through a focused interface.
 
 > [!IMPORTANT]  
-> **Project Status: In Active Development Phase**  
-> SeptCrawler is a personal learning, research, recreational, and portfolio project being developed independently by [me](#author).  
+> **Project Status: MVP complete; In Re-iteration and Maintenance Phase**  
+> SeptCrawler is a personal learning, research, recreational, and portfolio project developed independently by [me](#author).  
 > Feedback and discussions are always welcome, but the repository is not intended for external contributions.
 
-> [!NOTE]  
-> Why "SeptCrawler"?  
-> I named this project **SeptCrawler** because, first of all, Sept comes from my name, and second of all, the crawler is where everything begins.
+> [!NOTE]
+>
+> 1. Why "SeptCrawler"? I named this project **SeptCrawler** because, first of all, Sept comes from my name, and second of all, the crawler is where everything begins.
+> 2. SeptCrawler is designed to crawl, index, rank, and search for technical educational resources. The crawler can target a specified website, but the MVP uses `cppreference` as its controlled corpus to keep the crawling scope and dataset manageable. Support for a broader collection of technical and educational websites is planned as future work.
 
 ---
 
@@ -30,7 +31,17 @@ I chose C++ and Go to keep the search engine core separate from the backend serv
 - **Go Service Layer:** Search API, web crawler, HTML parser, service coordination, network I/O, and client request routing in Go.
 - **C++ / Go Integration:** C-compatible API wrapper with `extern "C"` and cgo for in-process communication between the Go service layer and C++ core.
 
-> Basically, Go doesn't directly talk to my C++ classes/functions. cgo lets Go call a C-compatible interface, and bridge.cpp implements that interface by calling my actual C++ search-engine code and converting the results into C-compatible data that Go can consume.
+> Basically, Go does not directly talk to my C++ code. cgo lets Go call a C-compatible interface, and bridge.cpp implements that interface by calling my actual C++ search-engine code and converting the results into C-compatible data that Go can consume.
+
+---
+
+## Current Scope & Data Corpus
+
+The MVP currently operates on a deliberately controlled crawling scope centred on `https://en.cppreference.com`.
+
+- **Crawled Corpus:** 283 pages crawled, parsed and stored as JSON under `data/documents/`.
+- **Persistent Inverted Index:** ~28 MB JSON inverted index stored in `data/index/inverted_index.json`.
+- **Future Scope:** Broader crawling across multi-domain technical and educational resources is planned as post-MVP future work.
 
 ---
 
@@ -60,6 +71,38 @@ The system is split into 3 layers:
 
 > [!NOTE]  
 > When I say **online**, I mean work performed while handling a live user request, and **offline** refers to work performed independently of any live user request, typically in the background to prepare data for future searches.
+
+---
+
+## Using the Search Engine (Docker Container)
+
+I containerised SeptCrawler using Docker so that anyone exploring this repository can run and test the search engine locally without needing to manually install or configure `g++`, `make`, cgo environment variables, or Go dependencies on their host machine.
+
+The multi-stage `dockerfile` compiles the static C++ core library (`libseptcrawler_core.a`) and Go binaries, packaging them into an isolated Debian runtime image.
+
+### Building the Image
+
+```bash
+docker build -t septcrawler:latest .
+```
+
+### Running the Search API Server
+
+```bash
+docker run -d -p 8080:8080 -v septcrawler-data:/project/data --name septcrawler-app septcrawler:latest
+```
+
+### Running the Ingestion Pipeline (Crawler + Indexer)
+
+```bash
+docker run --rm -v septcrawler-data:/project/data septcrawler:latest /project/storage https://en.cppreference.com 2
+```
+
+### Testing the CLI Search Tool
+
+```bash
+docker run --rm -it -v septcrawler-data:/project/data septcrawler:latest /project/septcrawler-cli "vector clear"
+```
 
 ---
 
