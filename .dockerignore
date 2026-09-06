@@ -1,0 +1,12 @@
+.git
+.gitignore
+bin/
+.cache
+docs/
+dummy-data/
+plans/
+README.md
+dockerfile
+*.md
+compile_commands.json
+.clang-format
