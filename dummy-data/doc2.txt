@@ -1,2 +1,0 @@
-The GNU Debugger is called GDB in short.
-GDB helps debug programs written in compiled, native-binary languages.
