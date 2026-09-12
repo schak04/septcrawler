@@ -3,7 +3,7 @@
 This project is a search engine for retrieving learning resources (documentation, references, tutorials, and discussion forums). I have written the search engine core from scratch in C++, and the service layer in Go. The system is designed to crawl and index learning resources, allowing users to search across them through a focused interface.
 
 > [!IMPORTANT]  
-> **Project Status: MVP complete; In Re-iteration and Maintenance Phase**  
+> **Project Status: Complete; in iteration and maintenance phase**  
 > SeptCrawler is a personal learning, research, recreational, and portfolio project developed independently by [me](#author).  
 > Feedback and discussions are always welcome, but the repository is not intended for external contributions.
 
