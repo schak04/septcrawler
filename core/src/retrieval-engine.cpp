@@ -48,6 +48,7 @@ std::vector<CandidateDocument> generateCandidateDocuments(
     }
 
     for (const auto& entry : matchedTermsCountMap) {
+        // doc containing EVERY query term = candidate doc
         if (entry.second == static_cast<int>(postingListsToBeIntersected.size())) {
             CandidateDocument candidateDoc;
             candidateDoc.docId = entry.first;
