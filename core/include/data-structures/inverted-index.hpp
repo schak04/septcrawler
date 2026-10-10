@@ -5,7 +5,6 @@
 
 #include "./posting-list.hpp"
 
-class InvertedIndex {
-   public:
+struct InvertedIndex {
     std::unordered_map<std::string, PostingList> index;
 };

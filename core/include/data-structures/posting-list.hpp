@@ -4,8 +4,7 @@
 
 #include "./posting.hpp"
 
-class PostingList {
-   public:
+struct PostingList {
     std::vector<Posting> entries;
     int totalFrequency;
 };

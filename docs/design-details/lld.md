@@ -15,8 +15,7 @@ The inverted index is the core data structure of this search engine.
 It stores: `term -> documents`. This allows fast lookup.
 
 ```cpp
-class InvertedIndex {
-public:
+struct InvertedIndex {
     unordered_map<string, PostingList> index;
 };
 ```
@@ -28,8 +27,7 @@ public:
 A posting list contains all the documents in which a term appears.
 
 ```cpp
-class PostingList {
-public:
+struct PostingList {
     vector<Posting> entries;
     int totalFrequency;
 };
@@ -44,8 +42,7 @@ A posting represents a single entry in a posting list. It stores information abo
 > One posting for every (term, document) pair.
 
 ```cpp
-class Posting {
-public:
+struct Posting {
     int docId;
     int termFrequency;
     vector<int> positions;

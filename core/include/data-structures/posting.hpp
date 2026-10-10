@@ -2,8 +2,7 @@
 
 #include <vector>
 
-class Posting {
-   public:
+struct Posting {
     int docId;
     int termFrequency;
     std::vector<int> positions;
