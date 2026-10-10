@@ -1,10 +1,10 @@
 # SeptCrawler
 
-[![C++](https://img.shields.io/badge/C%2B%2B-20-00599C?style=for-the-badge&logo=c%2B%2B&logoColor=white)](https://en.cppreference.com/w/cpp/20)
-[![Go](https://img.shields.io/badge/Go-1.26-00ADD8?style=for-the-badge&logo=go&logoColor=white)](https://go.dev/)
-[![cgo](https://img.shields.io/badge/Bridge-cgo-007D9C?style=for-the-badge&logo=c&logoColor=white)](#technology-choices)
-[![Docker](https://img.shields.io/badge/Docker-Containerised-2496ED?style=for-the-badge&logo=docker&logoColor=white)](#using-the-search-engine-docker-container)
-[![Make](https://img.shields.io/badge/GNU%20Make-Build%20System-000000?style=for-the-badge&logo=gnu&logoColor=white)](Makefile)
+[![C++](https://img.shields.io/badge/C%2B%2B-20-00599C?style=flat-square&logo=c%2B%2B&logoColor=white)](https://en.cppreference.com/w/cpp/20)
+[![Go](https://img.shields.io/badge/Go-1.26-00ADD8?style=flat-square&logo=go&logoColor=white)](https://go.dev/)
+[![cgo](https://img.shields.io/badge/Bridge-cgo-007D9C?style=flat-square&logo=c&logoColor=white)](#technology-choices)
+[![Docker](https://img.shields.io/badge/Docker-Containerised-2496ED?style=flat-square&logo=docker&logoColor=white)](#using-the-search-engine-docker-container)
+[![Make](https://img.shields.io/badge/GNU%20Make-Build%20System-000000?style=flat-square&logo=gnu&logoColor=white)](Makefile)
 
 This project is a search engine for retrieving learning resources (documentation, references, tutorials, and discussion forums). I have written the search engine core from scratch in C++, and the service layer in Go. The system is designed to crawl and index learning resources, allowing users to search across them through a focused interface.
 
