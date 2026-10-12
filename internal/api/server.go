@@ -34,17 +34,27 @@ func searchHandler(w http.ResponseWriter, r *http.Request) {
 		Results: results,
 	}
 
-	encoder := json.NewEncoder(w)                      // future ref: https://pkg.go.dev/encoding/json#Encoder.Encode
 	w.Header().Set("Content-Type", "application/json") // future ref: https://pkg.go.dev/net/http#Header.Set
-	encoder.Encode(res)
+
+	// future ref: https://pkg.go.dev/encoding/json#Encoder.Encode
+	if err := json.NewEncoder(w).Encode(res); err != nil {
+		log.Printf("failed to encode search response: %v", err)
+	}
 }
 
-func (server *Server) RegisterRoutes() {
-	http.HandleFunc("/search", searchHandler)
+func (server *Server) RegisterRoutes() *http.ServeMux {
+	mux := http.NewServeMux()
+	mux.HandleFunc("/search", searchHandler)
+	return mux
 }
 
 func (server *Server) Start() {
-	server.RegisterRoutes()
+	mux := server.RegisterRoutes()
+
+	httpServer := &http.Server{
+		Addr:    port,
+		Handler: mux,
+	}
 
 	idx, err := storage.ReadInvertedIndex()
 	if err != nil {
@@ -55,5 +65,5 @@ func (server *Server) Start() {
 	}
 
 	fmt.Println("Server listening on port", port)
-	log.Fatal(http.ListenAndServe(port, nil))
+	log.Fatal(httpServer.ListenAndServe())
 }
