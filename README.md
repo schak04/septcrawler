@@ -74,7 +74,7 @@ The architecture is split into 3 layers:
 
 ---
 
-## Data Flow
+## Pipelines and Data Flow
 
 ![Data Flow Diagram](./docs/diagrams/dfd.png)
 
