@@ -20,12 +20,84 @@ This project is a search engine for retrieving learning resources (documentation
 
 ---
 
-## Goal/Motivation
+## Contents
+
+- [Documentation Index](#documentation-index)
+- [Goal and Motivation](#goal-and-motivation)
+- [System Architecture](#system-architecture)
+- [Pipelines and Data Flow](#pipelines-and-data-flow)
+- [Technology Choices](#technology-choices)
+- [Core Internals and Data Structures](#core-internals-and-data-structures)
+- [Search Execution Sequence](#search-execution-sequence)
+- [Design Decisions](#design-decisions)
+- [Using the Search Engine (Docker Container)](#using-the-search-engine-docker-container)
+- [References](#references)
+- [Author](#author)
+
+---
+
+## Documentation Index
+
+- [High-Level Design (HLD)](./docs/design-details/hld.md)
+- [Low-Level Design (LLD)](./docs/design-details/lld.md)
+- [C++ / Go Integration](./docs/design-details/cpp-go-integration.md)
+
+---
+
+## Goal and Motivation
 
 The goal of this project is for me to understand how traditional search engines work internally by building one from scratch.
 It is intended to strengthen my backend engineering, systems programming, and software design skills, along with my programming, research, and problem-solving abilities as a whole.
 I do not intend this to compete with existing search engines, as this is primarily for my learning of how such systems are designed and implemented.
 Along the way, my goal is to make something that could be useful for learners and developers like myself searching for focused learning resources, while not having their flow-state disrupted.
+
+---
+
+## System Architecture
+
+![System Architecture](./docs/diagrams/system-architecture.png)
+
+The system is organized into two main pipelines:
+
+1. **Ingestion Pipeline (offline):** Crawls and indexes learning resources from the internet.
+2. **Query Pipeline (online):** Processes user queries and returns ranked results.
+
+The architecture is split into 3 layers:
+
+- **C++ Search Engine Core Layer:** Inverted index construction, query normalization/tokenization, candidate document retrieval, and ranking.
+- **Go Service Layer:** Search API, web crawler, HTML parser, service coordination, network I/O, and client request routing.
+- **Storage Layer:** Raw document storage and persistent inverted index storage.
+
+### Component Breakdown
+
+![Component Breakdown](./docs/diagrams/component-breakdown.png)
+
+---
+
+## Data Flow
+
+![Data Flow Diagram](./docs/diagrams/dfd.png)
+
+### 1. Ingestion Pipeline (Offline)
+
+`Web -> HTML -> clean docs -> tokens -> inverted index`
+
+1. The Crawler fetches web pages.
+2. The HTML Parser extracts structured text from them.
+3. Raw documents are stored in the `Raw Documents` storage.
+4. The Index Builder then normalizes all the text, tokenizes the content, and builds the inverted index.
+5. The inverted index is stored in the `Persistent Inverted Index` storage.
+
+### 2. Query Pipeline (Online)
+
+`Query -> normalized query -> tokens -> postings -> candidate docs -> ranked results`
+
+1. A user enters a query: the client sends a request to the Search API.
+2. The API forwards the query to the Query Processor.
+3. The Query Processor normalizes and tokenizes the query.
+4. The Retrieval Engine uses tokens to look up inverted index, fetches posting lists, and merges the results into candidate docs.
+5. The Ranker scores the candidate documents and sorts them by relevance.
+6. The API returns ranked results to the user.
 
 ---
 
@@ -41,7 +113,18 @@ I chose C++ and Go to keep the search engine core separate from the backend serv
 
 ---
 
-## Current Scope & Data Corpus
+## Core Internals and Data Structures
+
+![C++ Indexing Internals](./docs/diagrams/dsd.png)
+
+The core data structure in the C++ engine is the inverted index:
+
+- **Inverted Index:** Maps search terms to posting lists (`term -> PostingList`).
+- **Posting List:** Contains document entries for each term with document frequency.
+- **Posting:** Records `docId`, `termFrequency`, and `positions` within a single document.
+- **Candidate Documents:** Generated dynamically during query execution by intersecting posting lists for ranking.
+
+### Current Scope and Data Corpus
 
 The MVP currently operates on a deliberately controlled crawling scope centred on `https://en.cppreference.com`.
 
@@ -51,18 +134,11 @@ The MVP currently operates on a deliberately controlled crawling scope centred o
 
 ---
 
-## System Overview
+## Search Execution Sequence
 
-There are two main pipelines:
+![Search Execution Sequence](./docs/diagrams/search-execution-sequence.png)
 
-1. **Ingestion Pipeline (offline):** Crawls and indexes learning resources from the internet.
-2. **Query Pipeline (online):** Processes user queries and returns ranked results.
-
-The system is split into 3 layers:
-
-- **C++ Search Engine Core Layer:** Inverted index construction, query normalization/tokenization, candidate document retrieval, and ranking.
-- **Go Service Layer:** Search API, web crawler, HTML parser, service coordination, network I/O, and client request routing.
-- **Storage Layer:** Raw document storage and persistent inverted index storage.
+When a search query is submitted, execution flows from the client through the Go HTTP handler, traverses the C-ABI bridge via cgo into the C++ retrieval engine and ranker, and returns ranked document results back across the boundary.
 
 ---
 
@@ -109,37 +185,6 @@ docker run --rm -v septcrawler-data:/project/data septcrawler:latest /project/st
 ```bash
 docker run --rm -it -v septcrawler-data:/project/data septcrawler:latest /project/septcrawler-cli "vector clear"
 ```
-
----
-
-## System Design
-
-### <ins>Textual Documentation</ins>
-
-- [High-Level Design](./docs/design-details/hld.md)
-- [Low-Level Design](./docs/design-details/lld.md)
-- [C++ <-> Go Integration](./docs/design-details/cpp-go-integration.md)
-
-### <ins>Diagrams</ins>
-
-#### <ins>High-Level Design</ins>
-
-- **System Architecture Diagram:**  
-  ![System Architecture](./docs/diagrams/system-architecture.png)
-
-- **Data Flow Diagram:**  
-  ![Data Flow Diagram](./docs/diagrams/dfd.png)
-
-#### <ins>Low-Level Design</ins>
-
-- **C++ Indexing Internals (Data Structure Diagram):**  
-  ![C++ Indexing Internals](./docs/diagrams/dsd.png)
-
-- **Search Execution Sequence (Sequence Diagram):**  
-  ![Search Execution Sequence](./docs/diagrams/search-execution-sequence.png)
-
-- **Component Breakdown (Component Diagram):**  
-  ![Component Breakdown](./docs/diagrams/component-breakdown.png)
 
 ---
 
