@@ -4,8 +4,7 @@ data
 
 # rough work
 plans
-docs/notes/drafts/
-drafts/
+*draft*
 
 # more
 compile_commands.json
