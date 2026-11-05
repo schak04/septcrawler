@@ -13,6 +13,13 @@
 #include "data-structures/posting-list.hpp"
 #include "data-structures/posting.hpp"
 
+// NOTE:
+// TF = (count of term in document) / (total terms in document)
+// IDF = log(total documents in corpus / documents containing term)
+// TF-IDF = TF * IDF
+// Measures the relative importance of a term to a specific document within a corpus.
+// Higher values indicate a term is frequent in this document but rare across the corpus.
+
 double calcTFIDFScore(const CandidateDocument& cd, const std::vector<std::string>& query) {
     const InvertedIndex& invidx = getInvertedIndex();
 
@@ -56,8 +63,9 @@ double calcTFIDFScore(const CandidateDocument& cd, const std::vector<std::string
 
         // for future ref: https://en.cppreference.com/cpp/numeric/math/log
         if (numberOfDocumentsContainingTerm > 0 && numberOfDocumentsInTheCorpus > 0) {
+            // +1 on denominator to be safe from division by zero
             const double IDF =
-                std::log(numberOfDocumentsInTheCorpus / numberOfDocumentsContainingTerm);
+                std::log(numberOfDocumentsInTheCorpus / (1 + numberOfDocumentsContainingTerm));
 
             // TF-IDF
             const double TFIDFScoreForQueryTerm = TF * IDF;
