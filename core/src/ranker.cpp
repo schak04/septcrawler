@@ -81,6 +81,20 @@ std::vector<CandidateDocument> rankCandidateDocuments(
     const std::vector<std::string>& query) {
     std::vector<CandidateDocument> rankedCandidateDocs = unrankedCandidateDocs;
 
+    // NOTE: std::sort() internally uses a sorting algorithm called Introsort (Introspective Sort)
+    // which is a hybrid sorting algorithm engineered to achieve optimal real-world performance
+    // it dynamically switches between 3 algorithms depending on the state of the data:
+    // Quicksort (primary), Heapsort (fallback), and Insertion Sort (micro-optimisation)
+
+    // NOTE:
+    // Quicksort, the primary algorithm, triggers at the start of execution for large datasets.
+    // When the recursion depth exceeds a threshold (typically 2logN base 2),
+    // Heapsort acts as the fallback and guarantees a worst-case TC of O(NlogN),
+    // preventing Quicksort from degrading it to O(N^2) on malicious / poorly partitioned data.
+    // When a sub-partition size drops below a threshold (usually 16 elements),
+    // Insertion sort gets triggered since it provides minimal overhead,
+    // is highly efficient for small collections, and takes advantage of modern CPU memory caches.
+
     std::sort(rankedCandidateDocs.begin(), rankedCandidateDocs.end(),
               [&query](const CandidateDocument& a, const CandidateDocument& b) {
                   return calcTFIDFScore(a, query) > calcTFIDFScore(b, query);
