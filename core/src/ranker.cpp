@@ -81,10 +81,10 @@ std::vector<CandidateDocument> rankCandidateDocuments(
     const std::vector<std::string>& query) {
     std::vector<CandidateDocument> rankedCandidateDocs = unrankedCandidateDocs;
 
-    // NOTE: std::sort() internally uses a sorting algorithm called Introsort (Introspective Sort)
-    // which is a hybrid sorting algorithm engineered to achieve optimal real-world performance
-    // it dynamically switches between 3 algorithms depending on the state of the data:
-    // Quicksort (primary), Heapsort (fallback), and Insertion Sort (micro-optimisation)
+    // NOTE: std::sort() internally uses a sorting algorithm called Introsort (Introspective Sort),
+    // which is a hybrid sorting algorithm engineered to achieve optimal real-world performance.
+    // It dynamically switches between 3 algorithms depending on the state of the data:
+    // Quicksort (primary), Heapsort (fallback), and Insertion Sort (micro-optimisation).
 
     // NOTE:
     // Quicksort, the primary algorithm, triggers at the start of execution for large datasets.
