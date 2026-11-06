@@ -20,66 +20,108 @@
 // Measures the relative importance of a term to a specific document within a corpus.
 // Higher values indicate a term is frequent in this document but rare across the corpus.
 
-double calcTFIDFScore(const CandidateDocument& cd, const std::vector<std::string>& query) {
-    const InvertedIndex& invidx = getInvertedIndex();
+// to avoid unnecessary calculations of the corpus stats
+struct CorpusStatistics {
+    // total number of terms in each document (docId -> total number of terms in that document)
+    std::unordered_map<int, double> docLengths;
 
-    std::unordered_map<int, double> docLengths;  // docId -> total number of terms in that document
+    // number of unique documents in the corpus
     std::unordered_set<int> distinctDocs;
+};
 
-    for (const auto& pair : invidx.index) {
-        for (const auto& p : pair.second.entries) {
-            docLengths[p.docId] += p.termFrequency;
-            distinctDocs.insert(p.docId);
+// build corpus stats with a single traversal of the inverted index
+CorpusStatistics buildCorpusStatistics(const InvertedIndex& invidx) {
+    CorpusStatistics stats;
+
+    for (const auto& [term, postingList] : invidx.index) {
+        for (const Posting& posting : postingList.entries) {
+            stats.docLengths[posting.docId] += posting.termFrequency;
+            stats.distinctDocs.insert(posting.docId);
         }
     }
 
-    double TFIDFScoreForCandidateDoc = 0;
+    return stats;
+}
+
+double calcTFIDFScore(const CandidateDocument& cd, const std::vector<std::string>& query,
+                      const CorpusStatistics& stats) {
+    const InvertedIndex& invidx = getInvertedIndex();
+
+    double TFIDFScoreForCandidateDoc = 0.0;
 
     for (const std::string& term : query) {
-        // TF
         // NOTE:
-        // Safe because candidate documents are generated using AND retrieval,
-        // so every candidate contains every query term.
-        Posting posting;  // for (term, cd.docId)
+        // since candidate documents are generated through AND retrieval
+        // every candidate is guaranteed to contain every query term
+        // so a corresponding posting should exist for each candidate-term pair
+
         auto it = invidx.index.find(term);
-        if (it != invidx.index.end()) {
-            for (const Posting& p : it->second.entries) {
-                if (p.docId == cd.docId) {
-                    posting = p;
-                    break;
-                }
+
+        if (it == invidx.index.end()) {
+            continue;
+        }
+
+        // find this doc's posting for the current query term
+        int termFrequency = 0;
+
+        for (const Posting& posting : it->second.entries) {
+            if (posting.docId == cd.docId) {
+                termFrequency = posting.termFrequency;
+                break;
             }
         }
 
-        const double countOfTermInDoc = posting.termFrequency;
-        const double totalTermsInDoc = docLengths[cd.docId];
+        // .at() is a safety net to catch invalid document IDs
+        const double documentLength = stats.docLengths.at(cd.docId);
 
-        const double TF = totalTermsInDoc > 0 ? (countOfTermInDoc / totalTermsInDoc) : 0.0;
+        // Term Frequency
+        const double TF =
+            documentLength > 0 ? static_cast<double>(termFrequency) / documentLength : 0.0;
 
-        // IDF
-        const double numberOfDocumentsInTheCorpus = static_cast<double>(distinctDocs.size());
+        // Inverse Document Frequency
+        const double numberOfDocumentsInTheCorpus = static_cast<double>(stats.distinctDocs.size());
+
         const double numberOfDocumentsContainingTerm =
-            (it != invidx.index.end()) ? static_cast<double>(it->second.entries.size()) : 0.0;
+            static_cast<double>(it->second.entries.size());
 
         // for future ref: https://en.cppreference.com/cpp/numeric/math/log
-        if (numberOfDocumentsContainingTerm > 0 && numberOfDocumentsInTheCorpus > 0) {
-            // +1 on denominator to be safe from division by zero
-            const double IDF =
-                std::log(numberOfDocumentsInTheCorpus / (1 + numberOfDocumentsContainingTerm));
+        // +1 on denominator to be safe from division by zero
+        const double IDF =
+            std::log(numberOfDocumentsInTheCorpus / (1 + numberOfDocumentsContainingTerm));
 
-            // TF-IDF
-            const double TFIDFScoreForQueryTerm = TF * IDF;
-            TFIDFScoreForCandidateDoc += TFIDFScoreForQueryTerm;
-        }
+        // TF-IDF
+        TFIDFScoreForCandidateDoc += TF * IDF;
     }
 
     return TFIDFScoreForCandidateDoc;
 }
 
+double calcTFIDFScore(const CandidateDocument& cd, const std::vector<std::string>& query) {
+    const CorpusStatistics stats = buildCorpusStatistics(getInvertedIndex());
+    return calcTFIDFScore(cd, query, stats);
+}
+
 std::vector<CandidateDocument> rankCandidateDocuments(
     const std::vector<CandidateDocument>& unrankedCandidateDocs,
     const std::vector<std::string>& query) {
-    std::vector<CandidateDocument> rankedCandidateDocs = unrankedCandidateDocs;
+    const InvertedIndex& invidx = getInvertedIndex();
+
+    // corpus statistics calculated once per ranking operation
+    const CorpusStatistics stats = buildCorpusStatistics(invidx);
+
+    // each candidate alongside its calculated score
+    std::vector<std::pair<CandidateDocument, double>> scoredDocuments;
+    scoredDocuments.reserve(unrankedCandidateDocs.size());
+
+    for (const CandidateDocument& doc : unrankedCandidateDocs) {
+        const double score = calcTFIDFScore(doc, query, stats);
+
+        // NOTE:
+        // Instead of creating a temporary object first and then copying or moving it
+        // into the container (like push_back does), emplace_back forwards the constructor arguments
+        // directly to the memory allocated inside the container.
+        scoredDocuments.emplace_back(doc, score);
+    }
 
     // NOTE: std::sort() internally uses a sorting algorithm called Introsort (Introspective Sort),
     // which is a hybrid sorting algorithm engineered to achieve optimal real-world performance.
@@ -95,10 +137,17 @@ std::vector<CandidateDocument> rankCandidateDocuments(
     // Insertion sort gets triggered since it provides minimal overhead,
     // is highly efficient for small collections, and takes advantage of modern CPU memory caches.
 
-    std::sort(rankedCandidateDocs.begin(), rankedCandidateDocs.end(),
-              [&query](const CandidateDocument& a, const CandidateDocument& b) {
-                  return calcTFIDFScore(a, query) > calcTFIDFScore(b, query);
-              });
+    // compare precomputed scores instead of recalculating them
+    // like I did at first, which made ranking slow as hell
+    std::sort(scoredDocuments.begin(), scoredDocuments.end(),
+              [](const auto& a, const auto& b) { return a.second > b.second; });
+
+    std::vector<CandidateDocument> rankedCandidateDocs;
+    rankedCandidateDocs.reserve(scoredDocuments.size());
+
+    for (const auto& [doc, score] : scoredDocuments) {
+        rankedCandidateDocs.push_back(doc);
+    }
 
     return rankedCandidateDocs;
 }
