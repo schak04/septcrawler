@@ -6,5 +6,8 @@ data
 plans
 *draft*
 
+# profiling artifact(s)
+perf.data
+
 # more
 compile_commands.json
