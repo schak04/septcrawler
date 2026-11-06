@@ -10,4 +10,5 @@ plans
 perf.data
 
 # more
+*.patch
 compile_commands.json
