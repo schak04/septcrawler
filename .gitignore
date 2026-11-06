@@ -9,6 +9,9 @@ plans
 # profiling artifact(s)
 perf.data
 
+# releases
+releases
+
 # more
 *.patch
 compile_commands.json
