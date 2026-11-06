@@ -10,3 +10,4 @@ dockerfile
 *.md
 compile_commands.json
 .clang-format
+perf.data
