@@ -14,6 +14,8 @@ Posting lists are vectors, and their order is not guaranteed for indexes loaded 
 
 The statistics-aware `calcTFIDFScore` overload creates query-term lookup data for each call. The `rankCandidateDocuments` path builds it once and reuses it for all candidates. The two-argument compatibility overload remains, rebuilding corpus statistics and query-term lookup data on every call.
 
+---
+
 ## Complexity
 
 Let:
@@ -36,6 +38,8 @@ The second optimisation (query-term posting lookup) builds statistics and query-
 `O(P + QL + NQ + N log N)`
 
 These bounds assume expected constant-time `unordered_map` and `unordered_set` operations. Map construction covers at most the posting lists for the query's distinct terms, and the query lookup maps use `O(QL)` additional memory. These expressions exclude index loading, retrieval, and output. The compatibility overload performs the `O(P + QL)` setup on each call.
+
+---
 
 ## Benchmark Evidence
 
@@ -77,6 +81,4 @@ The end-to-end timings are close and show no measurable CLI-level improvement. I
 
 The complete command output and per-run measurements are documented here: [candidate posting lookup benchmark report](./benchmarks/candidate-posting-lookup.md)
 
-## Remaining work
-
-The two-argument compatibility overload still rebuilds corpus statistics and query-term lookup maps on every call. Callers calculating scores for multiple candidates should use the ranking path, which shares both structures. A dedicated ranker benchmark that excludes index loading would measure the lookup change directly.
+---

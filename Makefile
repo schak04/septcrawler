@@ -22,6 +22,7 @@ BIN_APP = bin/septcrawler
 BIN_CLI = bin/septcrawler-cli
 BIN_STORAGE = bin/storage
 BIN_RANKER_TEST = bin/ranker-test
+BIN_RANKER_BENCHMARK = bin/ranker-benchmark
 
 all: $(BIN_APP) $(BIN_CLI) $(BIN_STORAGE)
 
@@ -54,7 +55,14 @@ $(BIN_RANKER_TEST): core/tests/ranker_test.cpp core/src/ranker.cpp core/src/retr
 test-ranker: $(BIN_RANKER_TEST)
 	./$(BIN_RANKER_TEST)
 
-.PHONY: test-ranker
+$(BIN_RANKER_BENCHMARK): core/tests/ranker_benchmark.cpp core/src/ranker.cpp core/src/retrieval-engine.cpp
+	@mkdir -p bin
+	$(CXX) $(CXXFLAGS) $^ -o $@
+
+benchmark-ranker: $(BIN_RANKER_BENCHMARK)
+	./$(BIN_RANKER_BENCHMARK)
+
+.PHONY: test-ranker benchmark-ranker
 
 clean:
 	rm -rf bin
