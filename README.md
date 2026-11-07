@@ -30,6 +30,7 @@ This project is a search engine for retrieving learning resources (documentation
 - [Core Internals and Data Structures](#core-internals-and-data-structures)
 - [Search Execution Sequence](#search-execution-sequence)
 - [Design Decisions](#design-decisions)
+- [Performance](#performance)
 - [Using the Search Engine (Docker Container)](#using-the-search-engine-docker-container)
 - [References](#references)
 - [Author](#author)
@@ -153,6 +154,10 @@ When a search query is submitted, execution flows from the client through the Go
 
 > [!NOTE]  
 > When I say **online**, I mean work performed while handling a live user request, and **offline** refers to work performed independently of any live user request, typically in the background to prepare data for future searches.
+
+## Performance
+
+- [TF-IDF Search Ranking Optimisation](./docs/performance/search-ranking-optimisation.md)
 
 ---
 
