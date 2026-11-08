@@ -189,33 +189,38 @@ double calcTFIDFScore(const CandidateDocument& cd, const std::vector<std::string
 }
 
 double calcTFIDFScore(const CandidateDocument& cd, const std::vector<std::string>& query) {
-    const CorpusStatistics stats = buildCorpusStatistics(getInvertedIndex());
-    return calcTFIDFScore(cd, query, stats);
+    return calcTFIDFScores({cd}, query).front();
+}
+
+std::vector<double> calcTFIDFScores(const std::vector<CandidateDocument>& candidateDocs,
+                                    const std::vector<std::string>& query) {
+    const InvertedIndex& invidx = getInvertedIndex();
+    const CorpusStatistics stats = buildCorpusStatistics(invidx);
+    const auto queryStats = buildQueryTermStatistics(invidx, query);
+
+    std::vector<double> scores;
+    scores.reserve(candidateDocs.size());
+    for (const CandidateDocument& doc : candidateDocs) {
+        scores.push_back(calcTFIDFScore(doc, query, stats, queryStats));
+    }
+    return scores;
 }
 
 std::vector<CandidateDocument> rankCandidateDocuments(
     const std::vector<CandidateDocument>& unrankedCandidateDocs,
     const std::vector<std::string>& query) {
-    const InvertedIndex& invidx = getInvertedIndex();
-
-    // both corpus stats & query stats calculated once per ranking operation
-    // corpus stats -> corpus-wide info
-    // query stats -> query-wide info
-    const CorpusStatistics stats = buildCorpusStatistics(invidx);
-    const auto queryStats = buildQueryTermStatistics(invidx, query);
+    const std::vector<double> scores = calcTFIDFScores(unrankedCandidateDocs, query);
 
     // each candidate alongside its calculated score
     std::vector<std::pair<CandidateDocument, double>> scoredDocuments;
     scoredDocuments.reserve(unrankedCandidateDocs.size());
 
-    for (const CandidateDocument& doc : unrankedCandidateDocs) {
-        const double score = calcTFIDFScore(doc, query, stats, queryStats);
-
+    for (std::size_t i = 0; i < unrankedCandidateDocs.size(); ++i) {
         // NOTE:
         // Instead of creating a temporary object first and then copying or moving it
         // into the container (like push_back does), emplace_back forwards the constructor arguments
         // directly to the memory allocated inside the container.
-        scoredDocuments.emplace_back(doc, score);
+        scoredDocuments.emplace_back(unrankedCandidateDocs[i], scores[i]);
     }
 
     // NOTE: std::sort() internally uses a sorting algorithm called Introsort (Introspective Sort),

@@ -55,6 +55,13 @@ int main() {
     assert(std::abs(duplicateTermScore - 0.3 * idf) < 1e-12);
 
     const std::vector<CandidateDocument> candidates = {{1, 2}, {2, 2}};
+    const std::vector<double> scores = calcTFIDFScores(candidates, query);
+    assert(scores.size() == candidates.size());
+    assert(std::abs(scores[0] - doc1Score) < 1e-12);
+    assert(std::abs(scores[1] - doc2Score) < 1e-12);
+    assert(std::abs(calcTFIDFScore(candidates[0], query) - scores[0]) < 1e-12);
+    assert(calcTFIDFScores({}, query).empty());
+
     const std::vector<CandidateDocument> ranked = rankCandidateDocuments(candidates, query);
 
     assert(ranked.size() == 2);

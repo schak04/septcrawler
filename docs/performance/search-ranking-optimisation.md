@@ -12,7 +12,7 @@ In the MVP (v0.1.0), the `std::sort` comparator calculated both scores every tim
 
 Posting lists are vectors, and their order is not guaranteed for indexes loaded through the bridge. The ranker now builds a docID-to-termFrequency hash map for each query term once per ranking operation. Candidate scoring uses these maps instead of scanning every posting list for every candidate. The lookup data is local to ranking and covers only query terms, leaving the shared posting-list representation and retrieval code unchanged.
 
-The statistics-aware `calcTFIDFScore` overload creates query-term lookup data for each call. The `rankCandidateDocuments` path builds it once and reuses it for all candidates. The two-argument compatibility overload remains, rebuilding corpus statistics and query-term lookup data on every call.
+`calcTFIDFScores` builds corpus statistics and query-term lookup data once, then reuses them to score all supplied candidates. `rankCandidateDocuments` uses this batch path. The two-argument `calcTFIDFScore` overload remains available for compatibility and delegates to the batch path with one candidate. `calcTFIDFScores` can be used when scoring multiple candidates. The statistics-aware single-score overload still builds query-term lookup data for each call.
 
 ---
 
@@ -37,7 +37,7 @@ The second optimisation (query-term posting lookup) builds statistics and query-
 
 `O(P + QL + NQ + N log N)`
 
-These bounds assume expected constant-time `unordered_map` and `unordered_set` operations. Map construction covers at most the posting lists for the query's distinct terms, and the query lookup maps use `O(QL)` additional memory. These expressions exclude index loading, retrieval, and output. The compatibility overload performs the `O(P + QL)` setup on each call.
+These bounds assume expected constant-time `unordered_map` and `unordered_set` operations. Map construction covers at most the posting lists for the query's distinct terms, and the query lookup maps use `O(QL)` additional memory. These expressions exclude index loading, retrieval, and output. The single-candidate compatibility overload performs the `O(P + QL)` setup per call; batch scoring performs it once for all supplied candidates.
 
 ---
 

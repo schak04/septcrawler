@@ -13,5 +13,8 @@ double calcTFIDFScore(const CandidateDocument& cd, const std::vector<std::string
 double calcTFIDFScore(const CandidateDocument& cd, const std::vector<std::string>& query,
                       const CorpusStatistics& stats);
 
+std::vector<double> calcTFIDFScores(const std::vector<CandidateDocument>& candidateDocs,
+                                    const std::vector<std::string>& query);
+
 std::vector<CandidateDocument> rankCandidateDocuments(
     const std::vector<CandidateDocument>& candidateDocs, const std::vector<std::string>& query);
