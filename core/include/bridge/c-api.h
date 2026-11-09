@@ -4,6 +4,10 @@
 #ifndef SEPTCRAWLER_BRIDGE_C_API_H
 #define SEPTCRAWLER_BRIDGE_C_API_H
 
+// NOTE:
+// __cplusplus is a predefined macro that C++ compilers define
+
+// extern "C" is activated only when included by a C++ compiler, skipped when C compiler
 #ifdef __cplusplus
 extern "C" {
 #endif

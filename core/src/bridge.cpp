@@ -1,3 +1,6 @@
+// NOTE:
+// Go application <-> C-compatible API <-> bridge.cpp (this) <-> C++ search engine
+
 #include <cstdlib>
 #include <cstring>
 #include <string>
